@@ -65,7 +65,7 @@ public class CommandHandler implements CommandExecutor {
 
         // If command not found or no permission: say so
         if (baseCommand == null || !baseCommand.hasPermission(player))
-            return commandError(player, "Command " + args[0] + " not found", "Do /virtualRedstone for a list of commands");
+            return commandError(player, "Command " + args[0] + " not found", "Do /virtualredstone for a list of commands");
 
         args = Arrays.copyOfRange(args, 1, args.length);
 

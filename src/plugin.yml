@@ -1,5 +1,5 @@
 name: VirtualRedstone
-main: VirtualRedstone
+main: com.johncorby.virtualredstone.VirtualRedstone
 version: 1.0
 author: JohnCorby
 description: Plugin for my server
