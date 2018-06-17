@@ -8,7 +8,7 @@ depend: [FastAsyncWorldEdit, PlugMan]
 commands:
     virtualredstone:
         description: Base VirtualRedstone command.
-        aliases: vr
+        aliases: vrs
 
 permissions:
     vr.admin:

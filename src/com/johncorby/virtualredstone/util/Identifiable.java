@@ -5,10 +5,10 @@ import java.util.Objects;
 
 /**
  * A class that is identified by another class
- * Can also be used as a wrapper to associate methods/fields/classes with the identity
+ * Can also be used as a wrapper to associate methods/fields/classes with the identity1
  */
 public class Identifiable<I> extends Class {
-    private I identity;
+    protected I identity;
 
     public Identifiable(@Nonnull I identity) {
         super();
@@ -28,7 +28,7 @@ public class Identifiable<I> extends Class {
                 return ((Identifiable) c);
             }
         }
-        return null;
+        throw new IllegalStateException(clazz.getSimpleName() + "<" + identity + "> doesn't exist");
     }
 
     protected boolean create(I identity) {
@@ -44,15 +44,15 @@ public class Identifiable<I> extends Class {
     public final I get() throws IllegalStateException {
         if (!exists())
             throw new IllegalStateException(this + " doesn't exist");
-        if (getUnavailable()) {
+        if (!available()) {
             super.dispose();
             throw new IllegalStateException("Identity for " + this + " unavailable");
         }
         return identity;
     }
 
-    protected boolean getUnavailable() {
-        return identity == null;
+    protected boolean available() {
+        return identity != null;
     }
 
     @Override
@@ -62,12 +62,13 @@ public class Identifiable<I> extends Class {
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass().equals(getClass()) &&
-                Objects.equals(identity, ((Identifiable) obj).identity);
+        if (!getClass().equals(obj.getClass())) return false;
+        Identifiable i = (Identifiable) obj;
+        return Objects.equals(identity, i.identity);
     }
 
     @Override
     public int hashCode() {
-        return identity.hashCode();
+        return Objects.hashCode(identity);
     }
 }

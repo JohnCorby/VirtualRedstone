@@ -1,25 +1,21 @@
 package com.johncorby.virtualredstone.block;
 
-import com.johncorby.virtualredstone.util.Identifiable;
-import org.bukkit.block.Sign;
+import org.bukkit.Location;
 
-public class Input extends Identifiable<Sign> {
+public class Input extends SignLink {
     private boolean powered = false;
 
-    public Input(Sign identity) {
+    public Input(Location identity) {
         super(identity);
     }
 
-    public static Input get(Sign identity) {
+    public static Input get(Location identity) {
         return (Input) get(Input.class, identity);
     }
 
     public void set(boolean powered) {
+        if (powered == this.powered) return;
         this.powered = powered;
-        if (powered) {
-
-        } else {
-
-        }
+        debug("Powered = " + powered);
     }
 }
