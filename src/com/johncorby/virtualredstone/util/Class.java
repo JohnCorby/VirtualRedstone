@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Class {
     protected static final List<Class> classes = new ArrayList<>();
-    private boolean exists = false;
+    protected boolean exists = false;
 
     public Class() throws IllegalStateException {
         create();

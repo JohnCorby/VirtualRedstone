@@ -1,10 +1,9 @@
 package com.johncorby.virtualredstone.game.event;
 
+import com.johncorby.virtualredstone.VirtualRedstone;
 import com.johncorby.virtualredstone.arenaapi.arena.Arena;
 import com.johncorby.virtualredstone.game.arena.ProjVelSet;
-import com.johncorby.virtualredstone.VirtualRedstone;
 import org.bukkit.entity.*;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;

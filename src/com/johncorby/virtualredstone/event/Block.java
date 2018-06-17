@@ -1,7 +1,7 @@
 package com.johncorby.virtualredstone.event;
 
-import com.johncorby.virtualredstone.block.Input;
-import org.bukkit.Bukkit;
+import com.johncorby.virtualredstone.sequencer.Sequencer;
+import com.johncorby.virtualredstone.table.Table;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -11,6 +11,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.SignChangeEvent;
+
+import static com.johncorby.virtualredstone.util.Common.toInt;
 
 public class Block implements Listener {
     @EventHandler
@@ -36,12 +38,36 @@ public class Block implements Listener {
 
         switch (s.getLine(0)) {
             case "[sin]":
+                new com.johncorby.virtualredstone.sequencer.Input(
+                        s.getLocation(),
+                        Sequencer.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                );
                 break;
             case "[sout]":
+                new com.johncorby.virtualredstone.sequencer.Output(
+                        s.getLocation(),
+                        Sequencer.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                );
                 break;
             case "[tin]":
+                new com.johncorby.virtualredstone.table.Input(
+                        s.getLocation(),
+                        Table.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                );
                 break;
             case "[tout]":
+                new com.johncorby.virtualredstone.table.Output(
+                        s.getLocation(),
+                        Table.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                );
                 break;
         }
     }
@@ -55,12 +81,36 @@ public class Block implements Listener {
 
         switch (s.getLine(0)) {
             case "[sin]":
+                com.johncorby.virtualredstone.sequencer.Input.get(
+                        s.getLocation(),
+                        Sequencer.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                ).dispose();
                 break;
             case "[sout]":
+                com.johncorby.virtualredstone.sequencer.Output.get(
+                        s.getLocation(),
+                        Sequencer.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                ).dispose();
                 break;
             case "[tin]":
+                com.johncorby.virtualredstone.table.Input.get(
+                        s.getLocation(),
+                        Table.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                ).dispose();
                 break;
             case "[tout]":
+                com.johncorby.virtualredstone.table.Output.get(
+                        s.getLocation(),
+                        Table.get(s.getLine(1)),
+                        toInt(s.getLine(2)),
+                        toInt(s.getLine(3))
+                ).dispose();
                 break;
         }
     }
@@ -68,7 +118,6 @@ public class Block implements Listener {
 
     @EventHandler
     public void onRedstone(BlockRedstoneEvent event) {
-        if (event.getBlock().getWorld() != Bukkit.getPlayer("johncorby").getWorld()) return;
         for (BlockFace f : new BlockFace[]{
                 BlockFace.NORTH,
                 BlockFace.SOUTH,
@@ -85,14 +134,22 @@ public class Block implements Listener {
 
             switch (s.getLine(0)) {
                 case "[sin]":
+                    com.johncorby.virtualredstone.sequencer.Input.get(
+                            s.getLocation(),
+                            Sequencer.get(s.getLine(1)),
+                            toInt(s.getLine(2)),
+                            toInt(s.getLine(3))
+                    ).set(event.getNewCurrent() > 0);
                     break;
                 case "[tin]":
+                    com.johncorby.virtualredstone.table.Input.get(
+                            s.getLocation(),
+                            Table.get(s.getLine(1)),
+                            toInt(s.getLine(2)),
+                            toInt(s.getLine(3))
+                    ).set(event.getNewCurrent() > 0);
                     break;
-                default:
-                    continue;
             }
-
-            Input.get(s.getLocation()).set(event.getNewCurrent() > 0);
         }
     }
 }

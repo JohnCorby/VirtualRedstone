@@ -3,7 +3,7 @@ main: com.johncorby.virtualredstone.VirtualRedstone
 version: 1.0
 author: JohnCorby
 description: Plugin for my server
-depend: [FastAsyncWorldEdit, PlugMan]
+depend: [PlugMan]
 
 commands:
     virtualredstone:
@@ -11,6 +11,6 @@ commands:
         aliases: vrs
 
 permissions:
-    vr.admin:
+    vrs.admin:
         description: You can do everything.
         default: false

@@ -1,7 +1,7 @@
 package com.johncorby.virtualredstone.game.arena;
 
-import com.johncorby.virtualredstone.util.MessageHandler;
 import com.johncorby.virtualredstone.util.IdentifiableTask;
+import com.johncorby.virtualredstone.util.MessageHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -22,6 +22,14 @@ public class CoolDown extends IdentifiableTask<Player> {
 
     public static boolean dispose(Player identity) {
         return dispose(identity, CoolDown.class);
+    }
+
+    public static void heal(Player p) {
+        p.setHealth(p.getMaxHealth());
+        p.setFoodLevel(20);
+        p.setFireTicks(0);
+        for (PotionEffect e : p.getActivePotionEffects())
+            p.removePotionEffect(e.getType());
     }
 
     @Override
@@ -47,13 +55,5 @@ public class CoolDown extends IdentifiableTask<Player> {
         get().setInvulnerable(false);
 //        get().setGlowing(false);
         return super.dispose();
-    }
-
-    public static void heal(Player p) {
-        p.setHealth(p.getMaxHealth());
-        p.setFoodLevel(20);
-        p.setFireTicks(0);
-        for (PotionEffect e : p.getActivePotionEffects())
-            p.removePotionEffect(e.getType());
     }
 }

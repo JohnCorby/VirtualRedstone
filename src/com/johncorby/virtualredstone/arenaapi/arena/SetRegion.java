@@ -1,7 +1,7 @@
 package com.johncorby.virtualredstone.arenaapi.arena;
 
-import com.johncorby.virtualredstone.util.MessageHandler;
 import com.johncorby.virtualredstone.util.Identifiable;
+import com.johncorby.virtualredstone.util.MessageHandler;
 import org.bukkit.entity.Player;
 
 public class SetRegion extends Identifiable<Player> {

@@ -15,19 +15,19 @@ public class BiIdentifiable<I1, I2> extends Class {
     }
 
     // TODO: Override this in subclasses
-    public static BiIdentifiable get(Object identity) {
-        return get(BiIdentifiable.class, identity);
+    public static BiIdentifiable get(Object identity1, Object identity2) {
+        return get(BiIdentifiable.class, identity1, identity2);
     }
 
     protected static BiIdentifiable get(java.lang.Class<? extends BiIdentifiable> clazz,
-                                        Object identity) {
+                                        Object identity1, Object identity2) {
         for (Class c : classes) {
             if (c.getClass().equals(clazz) &&
-                    ((BiIdentifiable) c).get().equals(identity)) {
+                    ((BiIdentifiable) c).get().equals(identity1)) {
                 return ((BiIdentifiable) c);
             }
         }
-        throw new IllegalStateException(clazz.getSimpleName() + "<" + identity + "> doesn't exist");
+        throw new IllegalStateException(clazz.getSimpleName() + "<" + identity1 + ", " + identity2 + "> doesn't exist");
     }
 
     protected boolean create(I1 identity1, I2 identity2) {
@@ -37,14 +37,14 @@ public class BiIdentifiable<I1, I2> extends Class {
     }
 
     @Override
-    protected boolean create() {
+    protected final boolean create() {
         return true;
     }
 
-    public final Tuple<I1, I2> get() throws IllegalStateException {
+    public final Tuple2<I1, I2> get() throws IllegalStateException {
         if (!exists())
             throw new IllegalStateException(this + " doesn't exist");
-        Tuple<Boolean, Boolean> a = available();
+        Tuple2<Boolean, Boolean> a = available();
         if (!a.a) {
             super.dispose();
             throw new IllegalStateException("Identity1 for " + this + " unavailable");
@@ -53,11 +53,11 @@ public class BiIdentifiable<I1, I2> extends Class {
             super.dispose();
             throw new IllegalStateException("Identity2 for " + this + " unavailable");
         }
-        return new Tuple<>(identity1, identity2);
+        return new Tuple2<>(identity1, identity2);
     }
 
-    protected Tuple<Boolean, Boolean> available() {
-        return new Tuple<>(identity1 != null, identity2 != null);
+    protected Tuple2<Boolean, Boolean> available() {
+        return new Tuple2<>(identity1 != null, identity2 != null);
     }
 
     @Override

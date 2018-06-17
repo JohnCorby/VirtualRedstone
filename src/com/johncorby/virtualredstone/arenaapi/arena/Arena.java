@@ -2,13 +2,13 @@ package com.johncorby.virtualredstone.arenaapi.arena;
 
 import com.boydti.fawe.object.schematic.Schematic;
 import com.johncorby.virtualredstone.VirtualRedstone;
-import com.johncorby.virtualredstone.util.MessageHandler;
 import com.johncorby.virtualredstone.command.Lobby;
 import com.johncorby.virtualredstone.game.arena.JoinLeave;
 import com.johncorby.virtualredstone.game.arena.StateChange;
 import com.johncorby.virtualredstone.util.Class;
 import com.johncorby.virtualredstone.util.Common;
 import com.johncorby.virtualredstone.util.Identifiable;
+import com.johncorby.virtualredstone.util.MessageHandler;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BlockType;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
@@ -30,9 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.johncorby.virtualredstone.VirtualRedstone.*;
+import static com.johncorby.virtualredstone.VirtualRedstone.virtualRedstone;
 import static com.johncorby.virtualredstone.util.MessageHandler.commandError;
-import static com.johncorby.virtualredstone.util.Common.map;
 import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class Arena extends Identifiable<String> {

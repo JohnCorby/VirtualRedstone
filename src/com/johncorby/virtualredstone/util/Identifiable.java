@@ -1,16 +1,15 @@
 package com.johncorby.virtualredstone.util;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 /**
  * A class that is identified by another class
- * Can also be used as a wrapper to associate methods/fields/classes with the identity1
+ * Can also be used as a wrapper to associate methods/fields/classes with the identities
  */
 public class Identifiable<I> extends Class {
     protected I identity;
 
-    public Identifiable(@Nonnull I identity) {
+    public Identifiable(I identity) {
         super();
         create(identity);
     }
@@ -20,8 +19,8 @@ public class Identifiable<I> extends Class {
         return get(Identifiable.class, identity);
     }
 
-    protected static Identifiable get(@Nonnull java.lang.Class<? extends Identifiable> clazz,
-                                      @Nonnull Object identity) {
+    protected static Identifiable get(java.lang.Class<? extends Identifiable> clazz,
+                                      Object identity) {
         for (Class c : classes) {
             if (c.getClass().equals(clazz) &&
                     ((Identifiable) c).get().equals(identity)) {
@@ -37,7 +36,7 @@ public class Identifiable<I> extends Class {
     }
 
     @Override
-    protected boolean create() {
+    protected final boolean create() {
         return true;
     }
 

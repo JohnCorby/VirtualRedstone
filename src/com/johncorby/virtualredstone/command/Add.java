@@ -1,14 +1,18 @@
 package com.johncorby.virtualredstone.command;
 
+import com.johncorby.virtualredstone.sequencer.Sequencer;
+import com.johncorby.virtualredstone.table.Table;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
+import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.GENERAL;
 import static com.johncorby.virtualredstone.util.MessageHandler.commandError;
+import static com.johncorby.virtualredstone.util.MessageHandler.msg;
 
 public class Add extends BaseCommand {
     Add() {
-        super("Add a sequencer or table", "<name>", "gg.admin");
+        super("Add a sequencer or table", "<name>", "vrs.admin");
         TabCompleteHandler.register(getName(), 0, () -> Arrays.asList("sequencer", "table"));
     }
 
@@ -18,13 +22,29 @@ public class Add extends BaseCommand {
 
         if (args.length == 1) return commandError(sender, "You must supply a name");
 
-        switch (args[1]) {
+        switch (args[0]) {
             case "sequencer":
-                break;
+                try {
+                    Sequencer.get(args[1]);
+                } catch (Exception e) {
+                    new Sequencer(args[1]);
+                    msg(sender, GENERAL, "Added sequencer " + args[1]);
+                    break;
+                }
+
+                return commandError(sender, "Sequencer " + args[1] + " already exists");
             case "table":
-                break;
+                try {
+                    Table.get(args[1]);
+                } catch (Exception e) {
+                    new Table(args[1]);
+                    msg(sender, GENERAL, "Added table " + args[1]);
+                    break;
+                }
+
+                return commandError(sender, "Table " + args[1] + " already exists");
             default:
-                break;
+                return commandError(sender, "You must say whether to add a sequencer or table");
         }
         return true;
     }

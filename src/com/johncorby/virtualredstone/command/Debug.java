@@ -10,7 +10,7 @@ import static com.johncorby.virtualredstone.util.MessageHandler.msg;
 
 public class Debug extends BaseCommand {
     Debug() {
-        super("Get debug stuff", "", "gg.admin");
+        super("Get debug stuff", "", "vrs.admin");
     }
 
     @Override

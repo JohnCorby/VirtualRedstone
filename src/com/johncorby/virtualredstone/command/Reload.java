@@ -8,7 +8,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class Reload extends BaseCommand {
     Reload() {
-        super("Reload the plugin", "", "gg.admin");
+        super("Reload the plugin", "", "vrs.admin");
     }
 
     @Override

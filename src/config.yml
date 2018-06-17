@@ -1,26 +1,28 @@
 #Sequencers:
 #  Name:
-#    Input:
-#      - x
-#      - y
-#      - z
-#    Outputs:
+#    Sequence:
+#      - o0
+#    IOs:
 #      0:
-#      - x
-#      - y
-#      - z
+#        Output: x, y, z
+#        Outputs:
+#          - x, y, z
 #Tables:
 #  Name:
-#    Inputs:
+#    Table:
+#      - i0, o0
+#    I/Os:
 #      0:
-#      - x
-#      - y
-#      - z
-#    Outputs:
-#      0:
-#      - x
-#      - y
-#      - z
+#        Inputs:
+#          - x, y, z
+#        Outputs:
+#          - x, y, z
+#
+#Sign:
+#  type (seq/tab + in/out)
+#  seq/tab name
+#  instance num
+#  in/out num
 
 
 Sequencers: {}
