@@ -1,5 +1,5 @@
-# GravityGuild
-Minecraft minigame plugin for my server
+# VirtualRedstone
+Minecraft plugin for my server
 
 # Build instructions
 You don't
