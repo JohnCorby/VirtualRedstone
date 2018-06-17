@@ -1,16 +1,16 @@
-name: GravityGuild
-main: com.johncorby.gravityguild.GravityGuild
-version: 2.0
+name: VirtualRedstone
+main: VirtualRedstone
+version: 1.0
 author: JohnCorby
-description: Minigame for my server
+description: Plugin for my server
 depend: [FastAsyncWorldEdit, PlugMan]
 
 commands:
-    gravityguild:
-        description: Base GravityGuild command.
-        aliases: gg
+    virtualredstone:
+        description: Base VirtualRedstone command.
+        aliases: vr
 
 permissions:
-    gravityguild.admin:
+    vr.admin:
         description: You can do everything.
         default: false
