@@ -46,7 +46,7 @@ public class MessageHandler {
         error(null, msgs);
     }
 
-    public static boolean commandError(CommandSender to, Object... messages) {
+    public static boolean playerError(CommandSender to, Object... messages) {
         for (Object m : messages)
             msg(to, ERROR, "Error: " + m);
         return false;

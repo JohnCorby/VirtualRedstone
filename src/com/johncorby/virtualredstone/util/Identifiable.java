@@ -27,7 +27,8 @@ public class Identifiable<I> extends Class {
                 return ((Identifiable) c);
             }
         }
-        throw new IllegalStateException(clazz.getSimpleName() + "<" + identity + "> doesn't exist");
+        //throw new IllegalStateException(clazz.getSimpleName() + "<" + identity + "> doesn't exist");
+        return null;
     }
 
     protected boolean create(I identity) {

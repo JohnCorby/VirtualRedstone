@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.johncorby.virtualredstone.VirtualRedstone.virtualRedstone;
-import static com.johncorby.virtualredstone.util.MessageHandler.commandError;
+import static com.johncorby.virtualredstone.util.MessageHandler.playerError;
 import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class CommandHandler implements CommandExecutor {
@@ -53,7 +53,7 @@ public class CommandHandler implements CommandExecutor {
         args = Arrays.stream(args).map(String::toLowerCase).toArray(String[]::new);
 
         // If sender not player: say so
-        if (!(sender instanceof Player)) return commandError(sender, "Sender must be player");
+        if (!(sender instanceof Player)) return playerError(sender, "Sender must be player");
         Player player = (Player) sender;
 
         // If no args: show help for all commands
@@ -65,15 +65,15 @@ public class CommandHandler implements CommandExecutor {
 
         // If command not found or no permission: say so
         if (baseCommand == null || !baseCommand.hasPermission(player))
-            return commandError(player, "Command " + args[0] + " not found", "Do /virtualredstone for a list of commands");
+            return playerError(player, "Command " + args[0] + " not found", "Do /virtualredstone for a list of commands");
 
         args = Arrays.copyOfRange(args, 1, args.length);
 
-        // Try to execute command or show commandError if commandError
+        // Try to execute command or show playerError if playerError
         try {
             return baseCommand.onCommand(player, args);
         } catch (Exception e) {
-            commandError(player, e);
+            playerError(player, e);
             MessageHandler.error((Object) getStackTrace(e));
             return false;
         }
