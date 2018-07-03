@@ -5,7 +5,6 @@ import org.bukkit.Server;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
-import java.lang.Class;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -217,7 +216,7 @@ public class Reflection {
          * get existing method by name and types
          *
          * @param name  name
-         * @param types method parameters. can be Class or RefClass
+         * @param types method parameters. can be StoredClass or RefClass
          * @return RefMethod object
          * @throws RuntimeException if method not found
          */
@@ -244,7 +243,7 @@ public class Reflection {
         /**
          * get existing constructor by types
          *
-         * @param types parameters. can be Class, RefClass or String
+         * @param types parameters. can be StoredClass, RefClass or String
          * @return RefMethod object
          * @throws RuntimeException if constructor not found
          */
@@ -256,7 +255,7 @@ public class Reflection {
                     if (e instanceof Class) classes[i++] = (Class) e;
                     else if (e instanceof RefClass) classes[i++] = ((RefClass) e).getRealClass();
                     else if (e instanceof String) classes[i++] = getRefClass((String) e).getRealClass();
-                    else throw new IllegalArgumentException(e + " is not a Class or RefClass");
+                    else throw new IllegalArgumentException(e + " is not a StoredClass or RefClass");
                 }
                 try {
                     return new RefConstructor<T>(clazz.getConstructor(classes));
@@ -271,7 +270,7 @@ public class Reflection {
         /**
          * find method by type parameters
          *
-         * @param types parameters. can be Class or RefClass
+         * @param types parameters. can be StoredClass or RefClass
          * @return RefMethod object
          * @throws RuntimeException if method not found
          */
@@ -282,7 +281,7 @@ public class Reflection {
                 if (e instanceof Class) classes[t++] = (Class) e;
                 else if (e instanceof RefClass) classes[t++] = ((RefClass) e).getRealClass();
                 else if (e instanceof String) classes[t++] = getRefClass((String) e).getRealClass();
-                else throw new IllegalArgumentException(e + " not a Class or RefClass");
+                else throw new IllegalArgumentException(e + " not a StoredClass or RefClass");
             }
             List<Method> methods = new ArrayList<>();
             Collections.addAll(methods, clazz.getMethods());
@@ -550,7 +549,7 @@ public class Reflection {
                 if (type instanceof Class) this.types.add((Class) type);
                 else if (type instanceof RefClass) this.types.add(((RefClass) type).getRealClass());
                 else if (type instanceof String) this.types.add(getRefClass((String) type).getRealClass());
-                else throw new IllegalArgumentException(type + " is not a Class or RefClass");
+                else throw new IllegalArgumentException(type + " is not a StoredClass or RefClass");
             }
             return this;
         }

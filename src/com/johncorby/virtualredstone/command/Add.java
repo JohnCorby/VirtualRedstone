@@ -1,8 +1,8 @@
 package com.johncorby.virtualredstone.command;
 
+import com.johncorby.virtualredstone.circuit.CircuitType;
+import com.johncorby.virtualredstone.circuit.Static;
 import org.bukkit.entity.Player;
-
-import java.util.Arrays;
 
 import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.GENERAL;
 import static com.johncorby.virtualredstone.util.MessageHandler.msg;
@@ -11,7 +11,7 @@ import static com.johncorby.virtualredstone.util.MessageHandler.playerError;
 public class Add extends BaseCommand {
     Add() {
         super("Add a sequencer or table", "<name>", "vrs.admin");
-        TabCompleteHandler.register(getName(), 0, () -> Arrays.asList("sequencer", "table"));
+        TabCompleteHandler.register(getName(), 0, "sequencer", "table");
     }
 
     @Override
@@ -22,15 +22,15 @@ public class Add extends BaseCommand {
 
         switch (args[0]) {
             case "sequencer":
-                if (com.johncorby.virtualredstone.sequencer.Static.get(args[1]) != null)
+                if (Static.get(CircuitType.SEQUENCER, args[1]) != null)
                     return playerError(sender, "Sequencer " + args[1] + " already exists");
-                new com.johncorby.virtualredstone.sequencer.Static(args[1]);
+                Static.newInstance(CircuitType.SEQUENCER, args[1]);
                 msg(sender, GENERAL, "Added sequencer " + args[1]);
                 break;
             case "table":
-                if (com.johncorby.virtualredstone.table.Static.get(args[1]) != null)
+                if (Static.get(CircuitType.TABLE, args[1]) != null)
                     return playerError(sender, "Table " + args[1] + " already exists");
-                new com.johncorby.virtualredstone.table.Static(args[1]);
+                Static.newInstance(CircuitType.TABLE, args[1]);
                 msg(sender, GENERAL, "Added sequencer " + args[1]);
                 break;
             default:

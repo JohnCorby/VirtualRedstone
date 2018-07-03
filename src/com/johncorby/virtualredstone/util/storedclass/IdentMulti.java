@@ -1,28 +1,23 @@
-package com.johncorby.virtualredstone.util;
+package com.johncorby.virtualredstone.util.storedclass;
 
 import java.util.Arrays;
 
 /**
  * Identifiable but with multiple identities
  */
-public class MultiIdentifiable extends Class {
+public abstract class IdentMulti extends StoredClass {
     protected Object[] identities;
 
-    public MultiIdentifiable(Object... identities) {
+    public IdentMulti(Object... identities) {
         super();
         create(identities);
     }
 
-    // TODO: Override this in subclasses
-    public static MultiIdentifiable get(Object... identities) {
-        return get(MultiIdentifiable.class, identities);
-    }
-
-    protected static MultiIdentifiable get(java.lang.Class<? extends MultiIdentifiable> clazz,
-                                           Object... identities) {
-        for (Class c : classes) {
+    protected static IdentMulti get(java.lang.Class<? extends IdentMulti> clazz,
+                                    Object... identities) {
+        for (StoredClass c : classes) {
             if (!clazz.equals(c.getClass())) continue;
-            MultiIdentifiable i = (MultiIdentifiable) c;
+            IdentMulti i = (IdentMulti) c;
             if (Arrays.equals(i.get(), identities)) return i;
         }
         throw new IllegalStateException(clazz.getSimpleName() + "<" + Arrays.toString(identities) + "> doesn't exist");
@@ -63,7 +58,7 @@ public class MultiIdentifiable extends Class {
     @Override
     public boolean equals(Object obj) {
         if (!getClass().equals(obj.getClass())) return false;
-        MultiIdentifiable i = (MultiIdentifiable) obj;
+        IdentMulti i = (IdentMulti) obj;
         return Arrays.equals(identities, i.identities);
     }
 

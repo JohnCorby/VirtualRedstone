@@ -1,5 +1,6 @@
 package com.johncorby.virtualredstone.event;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import static com.johncorby.virtualredstone.VirtualRedstone.virtualRedstone;
@@ -14,6 +15,6 @@ public class EventHandler {
     }
 
     private static void register(Listener event) {
-        virtualRedstone.getServer().getPluginManager().registerEvents(event, virtualRedstone);
+        Bukkit.getPluginManager().registerEvents(event, virtualRedstone);
     }
 }

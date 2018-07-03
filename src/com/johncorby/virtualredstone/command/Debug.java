@@ -1,6 +1,6 @@
 package com.johncorby.virtualredstone.command;
 
-import com.johncorby.virtualredstone.util.Class;
+import com.johncorby.virtualredstone.util.storedclass.StoredClass;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.entity.Player;
 
@@ -16,7 +16,7 @@ public class Debug extends BaseCommand {
     @Override
     public boolean onCommand(Player sender, String[] args) {
         //debug(Thread.getAllStackTraces());
-        for (Class c : Class.getClasses())
+        for (StoredClass c : StoredClass.getClasses())
             try {
                 debug((Object[]) c.getDebug().toArray());
             } catch (Exception e) {

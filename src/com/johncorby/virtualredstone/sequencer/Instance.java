@@ -1,36 +1,42 @@
 package com.johncorby.virtualredstone.sequencer;
 
-import com.johncorby.virtualredstone.util.IdentifiableNode;
+import com.johncorby.virtualredstone.circuit.Static;
+import com.johncorby.virtualredstone.util.Runnable;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
+    protected Task task;
 
-public class Instance extends IdentifiableNode<Integer, Static, IdentifiableNode> {
     public Instance(Integer identity, Static parent) {
         super(identity, parent);
     }
 
-    public static Instance get(Integer identity, Static parent) {
-        return (Instance) get(Instance.class, identity, parent);
+    @Override
+    protected boolean create(Integer identity, Static parent) {
+        if (!super.create(identity, parent)) return false;
+        task = new Task();
+        return true;
+    }
+
+    protected void run() {
+
     }
 
     @Override
-    protected boolean create(Integer identity, Static parent) {
-        if (exists()) return false;
-        return super.create(identity, parent);
+    public boolean dispose() {
+        if (!task.isCancelled()) task.cancel();
+        return exists();
     }
 
-    public Set<Input> getInputs() {
-        return children.stream()
-                .filter(c -> c instanceof Input)
-                .map(c -> (Input) c)
-                .collect(Collectors.toSet());
-    }
+    protected final class Task extends Runnable {
+        @Override
+        public final void run() {
+            Instance.this.run();
+        }
 
-    public Set<Output> getOutputs() {
-        return children.stream()
-                .filter(c -> c instanceof Output)
-                .map(c -> (Output) c)
-                .collect(Collectors.toSet());
+        @Override
+        public final synchronized void cancel() {
+            super.cancel();
+            Instance.super.dispose();
+        }
     }
 }

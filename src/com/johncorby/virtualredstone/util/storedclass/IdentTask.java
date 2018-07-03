@@ -1,14 +1,12 @@
-package com.johncorby.virtualredstone.util;
+package com.johncorby.virtualredstone.util.storedclass;
 
-public class IdentifiableTask<I> extends Identifiable<I> {
+import com.johncorby.virtualredstone.util.Runnable;
+
+public abstract class IdentTask<I> extends Identifiable<I> {
     protected Task task;
 
-    public IdentifiableTask(I identity) {
+    public IdentTask(I identity) {
         super(identity);
-    }
-
-    public static IdentifiableTask get(Object identity) {
-        return (IdentifiableTask) get(IdentifiableTask.class, identity);
     }
 
     protected boolean create(I identity) {
@@ -17,9 +15,7 @@ public class IdentifiableTask<I> extends Identifiable<I> {
         return true;
     }
 
-    // TODO: Override this in subclasses
-    protected void run() {
-    }
+    protected abstract void run();
 
     @Override
     public boolean dispose() {
@@ -30,13 +26,13 @@ public class IdentifiableTask<I> extends Identifiable<I> {
     protected final class Task extends Runnable {
         @Override
         public final void run() {
-            IdentifiableTask.this.run();
+            IdentTask.this.run();
         }
 
         @Override
         public final synchronized void cancel() {
             super.cancel();
-            IdentifiableTask.super.dispose();
+            IdentTask.super.dispose();
         }
     }
 }

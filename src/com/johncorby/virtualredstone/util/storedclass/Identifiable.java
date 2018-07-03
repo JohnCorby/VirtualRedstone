@@ -1,12 +1,15 @@
-package com.johncorby.virtualredstone.util;
+package com.johncorby.virtualredstone.util.storedclass;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A class that is identified by another class
  * Can also be used as a wrapper to associate methods/fields/classes with the identities
  */
-public class Identifiable<I> extends Class {
+public abstract class Identifiable<I> extends StoredClass {
     protected I identity;
 
     public Identifiable(I identity) {
@@ -14,19 +17,13 @@ public class Identifiable<I> extends Class {
         create(identity);
     }
 
-    // TODO: Override this in subclasses
-    public static Identifiable get(Object identity) {
-        return get(Identifiable.class, identity);
-    }
-
-    protected static Identifiable get(java.lang.Class<? extends Identifiable> clazz,
+    @Nullable
+    protected static Identifiable get(Class<? extends Identifiable> clazz,
                                       Object identity) {
-        for (Class c : classes) {
-            if (c.getClass().equals(clazz) &&
-                    ((Identifiable) c).get().equals(identity)) {
-                return ((Identifiable) c);
-            }
-        }
+        Set<? extends Identifiable> identifiables = (Set<? extends Identifiable>) classes.get(clazz);
+        if (identifiables == null) return null;
+        for (Identifiable i : identifiables)
+            if (i.get().equals(identity)) return i;
         //throw new IllegalStateException(clazz.getSimpleName() + "<" + identity + "> doesn't exist");
         return null;
     }

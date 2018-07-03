@@ -1,6 +1,7 @@
 package com.johncorby.virtualredstone.event;
 
-import com.johncorby.virtualredstone.sequencer.Instance;
+import com.johncorby.virtualredstone.circuit.Input;
+import com.johncorby.virtualredstone.circuit.RedstoneSign;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -31,32 +32,8 @@ public class Block implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
-        Sign s = (Sign) event.getBlock().getState();
 
-        switch (s.getLine(0).toLowerCase()) {
-            case "[sin]":
-                com.johncorby.virtualredstone.sequencer.Input.signPlace(event);
-                break;
-            case "[sout]":
-                com.johncorby.virtualredstone.sequencer.Output.signPlace(event);
-                break;
-//            case "[tin]":
-//                new com.johncorby.virtualredstone.table.Input(
-//                        s.getLocation(),
-//                        Static.get(s.getLine(1)),
-//                        toInt(s.getLine(2)),
-//                        toInt(s.getLine(3))
-//                );
-//                break;
-//            case "[tout]":
-//                new com.johncorby.virtualredstone.table.Output(
-//                        s.getLocation(),
-//                        Static.get(s.getLine(1)),
-//                        toInt(s.getLine(2)),
-//                        toInt(s.getLine(3))
-//                );
-//                break;
-        }
+        RedstoneSign.signPlace(event);
     }
 
 
@@ -64,33 +41,8 @@ public class Block implements Listener {
     public void onBreak(BlockBreakEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
-        Sign s = (Sign) event.getBlock().getState();
 
-        Instance seqInst;
-        switch (s.getLine(0).toLowerCase()) {
-            case "[sin]":
-                com.johncorby.virtualredstone.sequencer.Input.signBreak(event);
-                break;
-            case "[sout]":
-                com.johncorby.virtualredstone.sequencer.Output.signBreak(event);
-                break;
-//            case "[tin]":
-//                com.johncorby.virtualredstone.table.Input.get(
-//                        s.getLocation(),
-//                        Static.get(s.getLine(1)),
-//                        toInt(s.getLine(2)),
-//                        toInt(s.getLine(3))
-//                ).dispose();
-//                break;
-//            case "[tout]":
-//                com.johncorby.virtualredstone.table.Output.get(
-//                        s.getLocation(),
-//                        Static.get(s.getLine(1)),
-//                        toInt(s.getLine(2)),
-//                        toInt(s.getLine(3))
-//                ).dispose();
-//                break;
-        }
+        Input.signBreak(event);
     }
 
 
@@ -112,16 +64,8 @@ public class Block implements Listener {
 
             switch (s.getLine(0).toLowerCase()) {
                 case "[sin]":
-                    com.johncorby.virtualredstone.sequencer.Input.signPower(event);
-                    break;
-//                case "[tin]":
-//                    com.johncorby.virtualredstone.table.Input.get(
-//                            s.getLocation(),
-//                            Static.get(s.getLine(1)),
-//                            toInt(s.getLine(2)),
-//                            toInt(s.getLine(3))
-//                    ).set(event.getNewCurrent() > 0);
-//                    break;
+                case "[tin]":
+                    Input.signPower(event);
             }
         }
     }

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -25,6 +26,13 @@ public class TabCompleteHandler implements TabCompleter {
 
     public static void register(String command, int argPos, Supplier<List<String>> results) {
         TabResult tabResult = new TabResult(command, argPos, results);
+        if (tabResults.contains(tabResult))
+            throw new IllegalArgumentException("TabResult already exists");
+        tabResults.add(tabResult);
+    }
+
+    public static void register(String command, int argPos, String... results) {
+        TabResult tabResult = new TabResult(command, argPos, () -> Arrays.asList(results));
         if (tabResults.contains(tabResult))
             throw new IllegalArgumentException("TabResult already exists");
         tabResults.add(tabResult);

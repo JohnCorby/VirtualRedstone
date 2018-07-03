@@ -12,38 +12,32 @@ import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.ERRO
 import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.GENERAL;
 
 public class MessageHandler {
-    public static final boolean DEBUG = true;
     private static final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "VirtualRedstone" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
-
-    private MessageHandler() {
-    }
 
     // Print message if debug
     public static void debug(String from, Object... msgs) {
-        if (DEBUG)
-            for (Object m : msgs)
-                log(GENERAL, ChatColor.AQUA + "[DEBUG] " +
-                        (from == null ? "" : from + " - ") + m);
-    }
-
-    // Print error (debug)
-    public static void error(String from, Object... msgs) {
-        if (DEBUG)
-            for (Object m : msgs)
-                log(ERROR, "[ERROR] " +
-                        (from == null ? "" : from + " - ") + ChatColor.RESET + m);
-    }
-
-    public static void error(Exception exception) {
-        if (DEBUG) exception.printStackTrace();
+        for (Object m : msgs)
+            log(GENERAL, ChatColor.AQUA + "[DEBUG] " +
+                    (from == null ? "" : from + " - ") + m);
     }
 
     public static void debug(Object... msgs) {
         debug(null, msgs);
     }
 
+    // Print error (debug)
+    public static void error(String from, Object... msgs) {
+        for (Object m : msgs)
+            log(ERROR, "[ERROR] " +
+                    (from == null ? "" : from + " - ") + ChatColor.RESET + m);
+    }
+
     public static void error(Object... msgs) {
         error(null, msgs);
+    }
+
+    public static void error(Exception exception) {
+        exception.printStackTrace();
     }
 
     public static boolean playerError(CommandSender to, Object... messages) {

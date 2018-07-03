@@ -28,6 +28,7 @@ public class CommandHandler implements CommandExecutor {
         register(new Reload());
         register(new Add());
         register(new Debug());
+        register(new SetTableCombo());
 
         //TabCompleteHandler.register("help", 0, () -> Common.map(commands, BaseCommand::getName));
     }

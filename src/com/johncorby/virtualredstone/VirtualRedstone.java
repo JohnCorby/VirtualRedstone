@@ -3,6 +3,7 @@ package com.johncorby.virtualredstone;
 import com.johncorby.virtualredstone.command.CommandHandler;
 import com.johncorby.virtualredstone.command.TabCompleteHandler;
 import com.johncorby.virtualredstone.event.EventHandler;
+import com.johncorby.virtualredstone.util.Config;
 import com.johncorby.virtualredstone.util.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,11 +15,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class VirtualRedstone extends JavaPlugin {
     public static JavaPlugin virtualRedstone;
-    public static CommandHandler commandHandler;
-    public static TabCompleteHandler tabCompleteHandler;
-    public static EventHandler eventHandler;
 
     public static FileConfiguration CONFIG;
+
+    // When plugin loaded
+    @Override
+    public void onLoad() {
+        MessageHandler.log(MessageHandler.MessageType.GENERAL, "VirtualRedstone loaded");
+    }
 
     // When plugin enabled
     @Override
@@ -27,17 +31,12 @@ public class VirtualRedstone extends JavaPlugin {
         virtualRedstone = this;
         CONFIG = getConfig();
 
-        commandHandler = new CommandHandler();
-        tabCompleteHandler = new TabCompleteHandler();
-        eventHandler = new EventHandler();
+        new CommandHandler();
+        new TabCompleteHandler();
+        new EventHandler();
+        new Config();
 
-        // Set up config
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-
-        // Load stuff from config
-
-        MessageHandler.log(MessageHandler.MessageType.GENERAL, "VirtualRedstone Enabled");
+        MessageHandler.log(MessageHandler.MessageType.GENERAL, "VirtualRedstone enabled");
     }
 
     // When plugin disabled
@@ -46,6 +45,10 @@ public class VirtualRedstone extends JavaPlugin {
         // Stop all VirtualRedstone tasks
         Bukkit.getScheduler().cancelTasks(this);
 
-        MessageHandler.log(MessageHandler.MessageType.GENERAL, "VirtualRedstone Disabled");
+        // Dispose all Identifiables
+        //for (StoredClass c : StoredClass.getClasses())
+        //    c.dispose();
+
+        MessageHandler.log(MessageHandler.MessageType.GENERAL, "VirtualRedstone disabled");
     }
 }
