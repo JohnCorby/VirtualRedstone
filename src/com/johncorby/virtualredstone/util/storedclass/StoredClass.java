@@ -1,9 +1,11 @@
 package com.johncorby.virtualredstone.util.storedclass;
 
-import com.johncorby.virtualredstone.util.MessageHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.*;
+import static com.johncorby.virtualredstone.util.MessageHandler.logP;
 
 /**
  * Store classes to manage them
@@ -21,19 +23,21 @@ public abstract class StoredClass {
     }
 
     protected boolean create() throws IllegalStateException {
-        if (exists()) return false;
-        exists = classes.add(this);
+        if (stored()) return false;
+        classes.add(this);
+        exists = true;
         debug("Created");
         return true;
     }
 
-    public final boolean exists() {
-        return exists || classes.contains(this);
+    public final boolean stored() {
+        return classes.contains(this);
     }
 
     public boolean dispose() {
-        if (!exists()) return false;
-        exists = !classes.remove(this);
+        if (!stored()) return false;
+        classes.remove(this);
+        exists = false;
         debug("Disposed");
         return true;
     }
@@ -44,12 +48,20 @@ public abstract class StoredClass {
         super.finalize();
     }
 
-    public final void debug(Object... msgs) {
-        MessageHandler.debug(toString(), msgs);
+    public final void info(Object... msgs) {
+        logP(INFO, toString(), msgs);
     }
 
-    protected final void error(Object... msgs) {
-        MessageHandler.error(toString(), msgs);
+    public final void warn(Object... msgs) {
+        logP(WARN, toString(), msgs);
+    }
+
+    public final void error(Object... msgs) {
+        logP(ERROR, toString(), msgs);
+    }
+
+    public final void debug(Object... msgs) {
+        logP(DEBUG, toString(), msgs);
     }
 
     public List<String> getDebug() {

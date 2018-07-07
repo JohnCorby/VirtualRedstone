@@ -13,7 +13,7 @@ public class Reload extends BaseCommand {
 
     @Override
     public boolean onCommand(Player sender, String[] args) {
-        MessageHandler.msg(sender, MessageHandler.MessageType.GENERAL, "Reloading VirtualRedstone");
+        MessageHandler.msg(sender, MessageHandler.MessageType.INFO, "Reloading VirtualRedstone");
         // Reload using console and plugman
         return getServer().dispatchCommand(getConsoleSender(), "plugman reload VirtualRedstone");
     }

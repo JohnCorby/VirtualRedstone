@@ -11,9 +11,8 @@
 #  Name:
 #    - io,o0
 #SignLocs:
-#  - x,y,z
+#  - location
 
 
-Sequencers: {}
-Tables: {}
-SignLocs: []
+Statics: []
+Signs: []

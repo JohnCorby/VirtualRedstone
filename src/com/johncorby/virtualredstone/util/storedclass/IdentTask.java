@@ -20,7 +20,7 @@ public abstract class IdentTask<I> extends Identifiable<I> {
     @Override
     public boolean dispose() {
         if (!task.isCancelled()) task.cancel();
-        return exists();
+        return stored();
     }
 
     protected final class Task extends Runnable {

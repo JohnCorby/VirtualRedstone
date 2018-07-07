@@ -1,5 +1,7 @@
 package com.johncorby.virtualredstone.util.storedclass;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 public abstract class IdentNode<I, P extends IdentNode, C extends IdentNode> extends Identifiable<I> {
@@ -16,15 +18,15 @@ public abstract class IdentNode<I, P extends IdentNode, C extends IdentNode> ext
 //        create(identity, null, children);
 //    }
 
-    protected static Identifiable get(java.lang.Class<? extends Identifiable> clazz,
-                                      Object identity,
-                                      IdentNode parent) {
-        for (StoredClass c : classes) {
-            if (!clazz.equals(c.getClass())) continue;
-            IdentNode i = (IdentNode) c;
-            if (Objects.equals(identity, i.identity) &&
-                    Objects.equals(parent, i.parent)) return i;
-        }
+    @Nullable
+    protected static IdentNode get(java.lang.Class<? extends IdentNode> clazz,
+                                   Object identity,
+                                   IdentNode parent) {
+        Set<? extends IdentNode> identifiables = (Set<? extends IdentNode>) classes.get(clazz);
+        if (identifiables == null) return null;
+        for (IdentNode i : identifiables)
+            if (i.get().equals(identity) &&
+                    i.getParent().equals(parent)) return i;
         //throw new IllegalStateException(String.format("%s<%s, %s> doesn't exist",
         //        clazz.getSimpleName(),
         //        identity,
@@ -46,20 +48,20 @@ public abstract class IdentNode<I, P extends IdentNode, C extends IdentNode> ext
 
     @Override
     public boolean dispose() {
-        if (!exists()) return false;
+        if (!stored()) return false;
         if (parent != null) parent.children.remove(this);
         children.forEach(IdentNode::dispose);
         return super.dispose();
     }
 
     public P getParent() throws IllegalStateException {
-        if (!exists())
+        if (!exists)
             throw new IllegalStateException(this + " doesn't exist");
         return parent;
     }
 
     public Set<C> getChildren() {
-        if (!exists())
+        if (!exists)
             throw new IllegalStateException(this + " doesn't exist");
         return children;
     }
@@ -84,7 +86,7 @@ public abstract class IdentNode<I, P extends IdentNode, C extends IdentNode> ext
     public List<String> getDebug() {
         List<String> r = new ArrayList<>();
         r.add(toString());
-        r.add(Arrays.toString(children.toArray()));
+        r.add("Children: " + children);
         return r;
     }
 }

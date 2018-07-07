@@ -2,47 +2,56 @@ package com.johncorby.virtualredstone.util.eventconversations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
 
 import static com.johncorby.virtualredstone.VirtualRedstone.virtualRedstone;
 
-public abstract class EventListener<E extends Event> implements Listener, EventExecutor {
+public abstract class ListenerWithResult<E extends Event> implements Listener, EventExecutor {
     private final Class<E> event;
     private final EventPriority priority;
     private final boolean ignoreCancelled;
 
-    public EventListener(Class<E> event) {
+    public ListenerWithResult(Class<E> event) {
         this(event, EventPriority.NORMAL, false);
     }
 
-    public EventListener(Class<E> event, EventPriority priority, boolean ignoreCancelled) {
+    public ListenerWithResult(Class<E> event, EventPriority priority, boolean ignoreCancelled) {
         this.event = event;
         this.priority = priority;
         this.ignoreCancelled = ignoreCancelled;
     }
 
-    public Class<E> getEvent() {
+    public final Class<E> getEvent() {
         return event;
     }
 
-    public EventPriority getPriority() {
+    public final EventPriority getPriority() {
         return priority;
     }
 
-    public boolean isIgnoreCancelled() {
+    public final boolean isIgnoreCancelled() {
         return ignoreCancelled;
     }
 
-    public void register() {
-        // Just in case it's already registered
+    public final void register() {
         unregister();
         Bukkit.getPluginManager().registerEvent(event, this, priority, this, virtualRedstone, ignoreCancelled);
     }
 
-    public void unregister() {
+    public final void unregister() {
         HandlerList.unregisterAll(this);
     }
 
-    @Override
-    public abstract void execute(Listener listener, Event event) throws EventException;
+    public final void execute(Listener listener, Event event) throws EventException {
+        E e = (E) event;
+        if (execute(e)) onSucceed(e);
+        else onFail(e);
+    }
+
+    public abstract boolean execute(E event) throws EventException;
+
+    public abstract void onSucceed(E event);
+
+    public abstract void onFail(E event);
 }

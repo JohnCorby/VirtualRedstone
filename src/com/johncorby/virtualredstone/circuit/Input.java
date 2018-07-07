@@ -14,4 +14,9 @@ public abstract class Input extends RedstoneSign {
         this.powered = powered;
         debug("Powered = " + powered);
     }
+
+    @Override
+    public boolean power() {
+        return powered;
+    }
 }

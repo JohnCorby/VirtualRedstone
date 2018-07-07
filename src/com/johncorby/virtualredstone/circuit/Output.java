@@ -18,4 +18,9 @@ public abstract class Output extends RedstoneSign {
         if (powering) sign.getBlock().setType(Material.REDSTONE_BLOCK);
         else sign.update(true, true);
     }
+
+    @Override
+    public boolean power() {
+        return powering;
+    }
 }

@@ -1,6 +1,7 @@
 package com.johncorby.virtualredstone.circuit;
 
 import com.johncorby.virtualredstone.util.Common;
+import com.johncorby.virtualredstone.util.MessageHandler;
 import com.johncorby.virtualredstone.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
@@ -32,10 +33,16 @@ public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> 
         if (circuitType == null) return null;
 
         Integer instNum = Common.toInt(sign.getLine(2));
-        if (instNum == null) return null;
+        if (instNum == null) {
+            MessageHandler.warn("Line 3: invalid inst num");
+            return null;
+        }
 
         Static stat = Static.get(sign);
-        if (stat == null) return null;
+        if (stat == null) {
+            MessageHandler.warn("Line 2: stat not found");
+            return null;
+        }
 
         Instance inst = Instance.get(circuitType, instNum, stat);
         if (inst == null) inst = Instance.newInstance(circuitType, instNum, stat);

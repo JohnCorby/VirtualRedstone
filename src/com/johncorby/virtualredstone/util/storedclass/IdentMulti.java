@@ -1,6 +1,7 @@
 package com.johncorby.virtualredstone.util.storedclass;
 
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Identifiable but with multiple identities
@@ -15,11 +16,10 @@ public abstract class IdentMulti extends StoredClass {
 
     protected static IdentMulti get(java.lang.Class<? extends IdentMulti> clazz,
                                     Object... identities) {
-        for (StoredClass c : classes) {
-            if (!clazz.equals(c.getClass())) continue;
-            IdentMulti i = (IdentMulti) c;
+        Set<? extends IdentMulti> identifiables = (Set<? extends IdentMulti>) classes.get(clazz);
+        if (identifiables == null) return null;
+        for (IdentMulti i : identifiables)
             if (Arrays.equals(i.get(), identities)) return i;
-        }
         throw new IllegalStateException(clazz.getSimpleName() + "<" + Arrays.toString(identities) + "> doesn't exist");
     }
 
@@ -34,7 +34,7 @@ public abstract class IdentMulti extends StoredClass {
     }
 
     public final Object[] get() throws IllegalStateException {
-        if (!exists())
+        if (!exists)
             throw new IllegalStateException(this + " doesn't exist");
         int a = getUnavailable() + 1;
         if (a > 0) {

@@ -24,7 +24,7 @@ public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
     @Override
     public boolean dispose() {
         if (!task.isCancelled()) task.cancel();
-        return exists();
+        return stored();
     }
 
     protected final class Task extends Runnable {

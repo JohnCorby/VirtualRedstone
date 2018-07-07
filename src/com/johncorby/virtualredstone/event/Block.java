@@ -32,8 +32,9 @@ public class Block implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
+        Sign s = (Sign) event.getBlock().getState();
 
-        RedstoneSign.signPlace(event);
+        RedstoneSign.signPlace(s);
     }
 
 
@@ -41,8 +42,9 @@ public class Block implements Listener {
     public void onBreak(BlockBreakEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
+        Sign s = (Sign) event.getBlock().getState();
 
-        Input.signBreak(event);
+        RedstoneSign.signBreak(s);
     }
 
 

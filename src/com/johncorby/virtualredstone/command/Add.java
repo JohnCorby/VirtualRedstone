@@ -4,7 +4,7 @@ import com.johncorby.virtualredstone.circuit.CircuitType;
 import com.johncorby.virtualredstone.circuit.Static;
 import org.bukkit.entity.Player;
 
-import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.GENERAL;
+import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.INFO;
 import static com.johncorby.virtualredstone.util.MessageHandler.msg;
 import static com.johncorby.virtualredstone.util.MessageHandler.playerError;
 
@@ -25,13 +25,13 @@ public class Add extends BaseCommand {
                 if (Static.get(CircuitType.SEQUENCER, args[1]) != null)
                     return playerError(sender, "Sequencer " + args[1] + " already exists");
                 Static.newInstance(CircuitType.SEQUENCER, args[1]);
-                msg(sender, GENERAL, "Added sequencer " + args[1]);
+                msg(sender, INFO, "Added sequencer " + args[1]);
                 break;
             case "table":
                 if (Static.get(CircuitType.TABLE, args[1]) != null)
                     return playerError(sender, "Table " + args[1] + " already exists");
                 Static.newInstance(CircuitType.TABLE, args[1]);
-                msg(sender, GENERAL, "Added sequencer " + args[1]);
+                msg(sender, INFO, "Added table " + args[1]);
                 break;
             default:
                 return playerError(sender, "You must say whether to add a sequencer or table");

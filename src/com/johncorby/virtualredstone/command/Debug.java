@@ -4,7 +4,7 @@ import com.johncorby.virtualredstone.util.storedclass.StoredClass;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.entity.Player;
 
-import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.GENERAL;
+import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.INFO;
 import static com.johncorby.virtualredstone.util.MessageHandler.debug;
 import static com.johncorby.virtualredstone.util.MessageHandler.msg;
 
@@ -18,11 +18,13 @@ public class Debug extends BaseCommand {
         //debug(Thread.getAllStackTraces());
         for (StoredClass c : StoredClass.getClasses())
             try {
-                debug((Object[]) c.getDebug().toArray());
+                Object[] debug = c.getDebug().toArray();
+                if (debug == null) continue;
+                debug(debug);
             } catch (Exception e) {
                 debug("Error getting debug for " + c + ": " + ExceptionUtils.getStackTrace(e));
             }
-        msg(sender, GENERAL, "See console");
+        msg(sender, INFO, "See console");
         return true;
     }
 }

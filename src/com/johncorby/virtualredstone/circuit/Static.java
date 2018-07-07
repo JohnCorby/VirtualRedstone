@@ -1,10 +1,15 @@
 package com.johncorby.virtualredstone.circuit;
 
+import com.johncorby.virtualredstone.util.Config;
 import com.johncorby.virtualredstone.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class Static extends IdentNode<String, IdentNode, Instance> {
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class Static extends IdentNode<String, IdentNode, Instance> implements ConfigurationSerializable {
     protected Static(String identity, IdentNode parent) {
         super(identity, parent);
     }
@@ -30,6 +35,35 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> {
         String statName = sign.getLine(1).toLowerCase();
         if (statName.isEmpty()) return null;
 
-        return Static.get(circuitType, statName);
+        return get(circuitType, statName);
+    }
+
+    public static Static deserialize(Map<String, Object> map) {
+        return newInstance(CircuitType.valueOf((String) map.get("CircuitType")), (String) map.get("Name"));
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("Name", get());
+        if (getClass().equals(com.johncorby.virtualredstone.sequencer.Static.class))
+            map.put("CircuitType", "SEQUENCER");
+        else
+            map.put("CircuitType", "TABLE");
+        return map;
+    }
+
+    @Override
+    protected boolean create(String identity, IdentNode parent) {
+        if (!super.create(identity, parent)) return false;
+        Config.add("Statics", this);
+        return true;
+    }
+
+    @Override
+    public boolean dispose() {
+        if (!stored()) return false;
+        Config.add("Statics", this);
+        return super.dispose();
     }
 }
