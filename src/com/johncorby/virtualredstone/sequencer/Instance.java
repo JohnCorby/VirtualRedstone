@@ -1,7 +1,7 @@
 package com.johncorby.virtualredstone.sequencer;
 
+import com.johncorby.coreapi.util.Runnable;
 import com.johncorby.virtualredstone.circuit.Static;
-import com.johncorby.virtualredstone.util.Runnable;
 
 public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
     protected Task task;

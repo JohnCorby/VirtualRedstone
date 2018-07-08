@@ -1,8 +1,9 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.virtualredstone.util.MessageHandler;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
+
+import static com.johncorby.coreapi.CoreApiPlugin.messageHandler;
 
 public enum CircuitType {
     SEQUENCER,
@@ -20,7 +21,7 @@ public enum CircuitType {
             case "[tout]":
                 return TABLE;
             default:
-                MessageHandler.warn("Line 1: invalid circuitType");
+                messageHandler.warn("Line 1: invalid circuitType");
                 return null;
         }
     }

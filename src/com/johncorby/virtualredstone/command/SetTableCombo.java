@@ -1,10 +1,11 @@
 package com.johncorby.virtualredstone.command;
 
+import com.johncorby.coreapi.command.BaseCommand;
 import com.johncorby.virtualredstone.circuit.RedstoneSign;
 import com.johncorby.virtualredstone.table.Static;
-import com.johncorby.virtualredstone.util.eventconversations.EventConversation;
-import com.johncorby.virtualredstone.util.eventconversations.EventPrompt;
-import com.johncorby.virtualredstone.util.eventconversations.ListenerWithResult;
+import com.johncorby.coreapi.util.eventconversations.EventConversation;
+import com.johncorby.coreapi.util.eventconversations.EventPrompt;
+import com.johncorby.coreapi.util.eventconversations.ListenerWithResult;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SetTableCombo extends BaseCommand {
-    SetTableCombo() {
+    public SetTableCombo() {
         super("Add a table combo", "", "vrs.admin");
     }
 

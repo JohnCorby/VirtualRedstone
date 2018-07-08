@@ -1,15 +1,15 @@
 package com.johncorby.virtualredstone.command;
 
-import com.johncorby.virtualredstone.util.storedclass.StoredClass;
+import com.johncorby.coreapi.command.BaseCommand;
+import com.johncorby.coreapi.util.storedclass.StoredClass;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.entity.Player;
 
-import static com.johncorby.virtualredstone.util.MessageHandler.MessageType.INFO;
-import static com.johncorby.virtualredstone.util.MessageHandler.debug;
-import static com.johncorby.virtualredstone.util.MessageHandler.msg;
+import static com.johncorby.coreapi.CoreApiPlugin.messageHandler;
+import static com.johncorby.coreapi.util.MessageHandler.MessageType.INFO;
 
 public class Debug extends BaseCommand {
-    Debug() {
+    public Debug() {
         super("Get debug stuff", "", "vrs.admin");
     }
 
@@ -20,11 +20,11 @@ public class Debug extends BaseCommand {
             try {
                 Object[] debug = c.getDebug().toArray();
                 if (debug == null) continue;
-                debug(debug);
+                messageHandler.debug(debug);
             } catch (Exception e) {
-                debug("Error getting debug for " + c + ": " + ExceptionUtils.getStackTrace(e));
+                messageHandler.debug("Error getting debug for " + c + ": " + ExceptionUtils.getStackTrace(e));
             }
-        msg(sender, INFO, "See console");
+        messageHandler.msg(sender, INFO, "See console");
         return true;
     }
 }

@@ -1,13 +1,15 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.virtualredstone.util.Common;
-import com.johncorby.virtualredstone.util.MessageHandler;
-import com.johncorby.virtualredstone.util.storedclass.IdentNode;
+import com.johncorby.coreapi.util.Common;
+import com.johncorby.coreapi.util.MessageHandler;
+import com.johncorby.coreapi.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.johncorby.coreapi.CoreApiPlugin.messageHandler;
 
 public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> {
     protected Instance(Integer identity, Static parent) {
@@ -34,13 +36,13 @@ public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> 
 
         Integer instNum = Common.toInt(sign.getLine(2));
         if (instNum == null) {
-            MessageHandler.warn("Line 3: invalid inst num");
+            messageHandler.warn("Line 3: invalid inst num");
             return null;
         }
 
         Static stat = Static.get(sign);
         if (stat == null) {
-            MessageHandler.warn("Line 2: stat not found");
+            messageHandler.warn("Line 2: stat not found");
             return null;
         }
 

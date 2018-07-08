@@ -1,33 +1,25 @@
 package com.johncorby.virtualredstone;
 
-import com.johncorby.virtualredstone.command.CommandHandler;
-import com.johncorby.virtualredstone.command.TabCompleteHandler;
-import com.johncorby.virtualredstone.event.EventHandler;
-import com.johncorby.virtualredstone.util.Config;
-import com.johncorby.virtualredstone.util.MessageHandler;
+import com.johncorby.coreapi.CoreApiPlugin;
+import com.johncorby.coreapi.command.CommandHandler;
+import com.johncorby.coreapi.command.TabCompleteHandler;
+import com.johncorby.coreapi.util.Config;
+import com.johncorby.coreapi.util.MessageHandler;
+import com.johncorby.virtualredstone.command.Add;
+import com.johncorby.virtualredstone.command.Debug;
+import com.johncorby.virtualredstone.command.Reload;
+import com.johncorby.virtualredstone.command.SetTableCombo;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * TODO BUGS: https://github.com/JohnCorby/VirtualRedstone/issues?q=is%3Aopen+is%3Aissue+label%3Abug
  * TODO FEATURES: https://github.com/JohnCorby/VirtualRedstone/issues?q=is%3Aopen+is%3Aissue+label%3Afeature
  */
-public class VirtualRedstone extends JavaPlugin {
-    public static VirtualRedstone virtualRedstone;
-
-    public static FileConfiguration CONFIG;
-
-    // When plugin loaded
+public class VirtualRedstone extends CoreApiPlugin {
     @Override
-    public void onLoad() {
-        MessageHandler.log(MessageHandler.MessageType.INFO, "VirtualRedstone loaded");
-    }
-
-    // When plugin enabled
-    @Override
-    public void onEnable() {
+    public void register() {
         // Register ConfigSerializable
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.sequencer.Static.class);
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Static.class);
@@ -38,27 +30,27 @@ public class VirtualRedstone extends JavaPlugin {
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Output.class);
 
         // Init classes
-        virtualRedstone = this;
-        CONFIG = getConfig();
+        messageHandler = new MessageHandler() {
+            @Override
+            protected String getPrefix() {
+                return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "VirtualRedstone" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET;
+            }
+        };
+        commandHandler = new CommandHandler() {
+            @Override
+            protected void register() {
+                register(new Reload());
+                register(new Debug());
+                register(new Add());
+                register(new SetTableCombo());
+            }
+        };
+        eventHandler = new com.johncorby.coreapi.event.EventHandler() {
+            @Override
+            protected void register() {
 
-        new CommandHandler();
-        new TabCompleteHandler();
-        new EventHandler();
+            }
+        };
         new Config();
-
-        MessageHandler.log(MessageHandler.MessageType.INFO, "VirtualRedstone enabled");
-    }
-
-    // When plugin disabled
-    @Override
-    public void onDisable() {
-        // Stop all VirtualRedstone tasks
-        Bukkit.getScheduler().cancelTasks(this);
-
-        // Dispose all Identifiables
-        //for (StoredClass c : StoredClass.getClasses())
-        //    c.dispose();
-
-        MessageHandler.log(MessageHandler.MessageType.INFO, "VirtualRedstone disabled");
     }
 }

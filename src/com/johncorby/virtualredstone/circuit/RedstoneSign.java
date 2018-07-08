@@ -1,9 +1,9 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.virtualredstone.util.Common;
-import com.johncorby.virtualredstone.util.Config;
-import com.johncorby.virtualredstone.util.MessageHandler;
-import com.johncorby.virtualredstone.util.storedclass.IdentNode;
+import com.johncorby.coreapi.util.Common;
+import com.johncorby.coreapi.util.Config;
+import com.johncorby.coreapi.util.MessageHandler;
+import com.johncorby.coreapi.util.storedclass.IdentNode;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.johncorby.coreapi.CoreApiPlugin.messageHandler;
 
 public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNode> implements ConfigurationSerializable {
     protected Sign sign;
@@ -44,13 +46,13 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
 
         Integer num = Common.toInt(sign.getLine(3));
         if (num == null) {
-            MessageHandler.warn("Line 4: invalid sign num");
+            messageHandler.warn("Line 4: invalid sign num");
             return null;
         }
 
         Instance inst = Instance.get(sign);
         if (inst == null) {
-            MessageHandler.warn("Line 3: inst not found");
+            messageHandler.warn("Line 3: inst not found");
             return null;
         }
 
@@ -85,7 +87,7 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
             if (Objects.requireNonNull(inst).getChildren().isEmpty())
                 inst.dispose();
         } catch (NullPointerException e) {
-            MessageHandler.warn(e);
+            messageHandler.warn(e);
         }
     }
 
