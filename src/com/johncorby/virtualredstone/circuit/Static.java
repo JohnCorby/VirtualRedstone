@@ -1,6 +1,5 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.coreapi.util.Config;
 import com.johncorby.coreapi.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;

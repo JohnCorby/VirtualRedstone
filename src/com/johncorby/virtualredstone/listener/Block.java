@@ -1,4 +1,4 @@
-package com.johncorby.virtualredstone.event;
+package com.johncorby.virtualredstone.listener;
 
 import com.johncorby.virtualredstone.circuit.Input;
 import com.johncorby.virtualredstone.circuit.RedstoneSign;

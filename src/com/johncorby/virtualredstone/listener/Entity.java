@@ -1,4 +1,4 @@
-package com.johncorby.virtualredstone.event;
+package com.johncorby.virtualredstone.listener;
 
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;

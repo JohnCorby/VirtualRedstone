@@ -1,9 +1,8 @@
 package com.johncorby.virtualredstone.circuit;
 
+import com.johncorby.coreapi.util.MessageHandler;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
-
-import static com.johncorby.coreapi.CoreApiPlugin.messageHandler;
 
 public enum SignType {
     INPUT,
@@ -21,7 +20,7 @@ public enum SignType {
             case "[tout]":
                 return OUTPUT;
             default:
-                messageHandler.warn("Line 1: invalid signType");
+                MessageHandler.warn("Line 1: invalid signType");
                 return null;
         }
     }

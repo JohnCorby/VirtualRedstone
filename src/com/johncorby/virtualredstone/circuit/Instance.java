@@ -9,8 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.johncorby.coreapi.CoreApiPlugin.messageHandler;
-
 public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> {
     protected Instance(Integer identity, Static parent) {
         super(identity, parent);
@@ -36,13 +34,13 @@ public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> 
 
         Integer instNum = Common.toInt(sign.getLine(2));
         if (instNum == null) {
-            messageHandler.warn("Line 3: invalid inst num");
+            MessageHandler.warn("Line 3: invalid inst num");
             return null;
         }
 
         Static stat = Static.get(sign);
         if (stat == null) {
-            messageHandler.warn("Line 2: stat not found");
+            MessageHandler.warn("Line 2: stat not found");
             return null;
         }
 

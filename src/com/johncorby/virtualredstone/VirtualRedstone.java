@@ -1,17 +1,15 @@
 package com.johncorby.virtualredstone;
 
 import com.johncorby.coreapi.CoreApiPlugin;
-import com.johncorby.coreapi.command.CommandHandler;
-import com.johncorby.coreapi.command.TabCompleteHandler;
-import com.johncorby.coreapi.util.Config;
-import com.johncorby.coreapi.util.MessageHandler;
+import com.johncorby.coreapi.command.BaseCommand;
+import com.johncorby.virtualredstone.circuit.Config;
 import com.johncorby.virtualredstone.command.Add;
-import com.johncorby.virtualredstone.command.Debug;
-import com.johncorby.virtualredstone.command.Reload;
 import com.johncorby.virtualredstone.command.SetTableCombo;
-import org.bukkit.Bukkit;
+import com.johncorby.virtualredstone.listener.Block;
+import com.johncorby.virtualredstone.listener.Entity;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.Listener;
 
 /**
  * TODO BUGS: https://github.com/JohnCorby/VirtualRedstone/issues?q=is%3Aopen+is%3Aissue+label%3Abug
@@ -19,7 +17,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
  */
 public class VirtualRedstone extends CoreApiPlugin {
     @Override
-    public void register() {
+    public void onEnable() {
+        super.onEnable();
+
         // Register ConfigSerializable
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.sequencer.Static.class);
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Static.class);
@@ -30,27 +30,27 @@ public class VirtualRedstone extends CoreApiPlugin {
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Output.class);
 
         // Init classes
-        messageHandler = new MessageHandler() {
-            @Override
-            protected String getPrefix() {
-                return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "VirtualRedstone" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET;
-            }
-        };
-        commandHandler = new CommandHandler() {
-            @Override
-            protected void register() {
-                register(new Reload());
-                register(new Debug());
-                register(new Add());
-                register(new SetTableCombo());
-            }
-        };
-        eventHandler = new com.johncorby.coreapi.event.EventHandler() {
-            @Override
-            protected void register() {
-
-            }
-        };
         new Config();
+    }
+
+    @Override
+    public String getMessagePrefix() {
+        return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "VirtualRedstone" + ChatColor.DARK_GRAY + "]";
+    }
+
+    @Override
+    public BaseCommand[] getCommands() {
+        return new BaseCommand[]{
+                new Add(),
+                new SetTableCombo()
+        };
+    }
+
+    @Override
+    public Listener[] getListeners() {
+        return new Listener[]{
+                new Block(),
+                new Entity()
+        };
     }
 }

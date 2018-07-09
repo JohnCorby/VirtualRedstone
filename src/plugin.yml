@@ -1,6 +1,6 @@
 name: VirtualRedstone
 main: com.johncorby.virtualredstone.VirtualRedstone
-version: 1.0
+version: 0.5
 author: JohnCorby
 description: Plugin for my server
 depend: [PlugMan]
@@ -11,6 +11,6 @@ commands:
         aliases: vrs
 
 permissions:
-    vrs.admin:
+    virtualredstone.admin:
         description: You can do everything.
-        default: false
+        default: op
