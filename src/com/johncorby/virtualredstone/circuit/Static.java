@@ -21,8 +21,8 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
 
     public static Static get(CircuitType circuitType, String identity) {
         if (circuitType == CircuitType.SEQUENCER)
-            return (Static) get(com.johncorby.virtualredstone.sequencer.Static.class, identity);
-        return (Static) get(com.johncorby.virtualredstone.table.Static.class, identity);
+            return get(com.johncorby.virtualredstone.sequencer.Static.class, identity);
+        return get(com.johncorby.virtualredstone.table.Static.class, identity);
     }
 
     // Get RedstoneSign from sign

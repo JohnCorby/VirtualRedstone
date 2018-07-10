@@ -22,8 +22,8 @@ public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> 
 
     public static Instance get(CircuitType circuitType, Integer identity, Static parent) {
         if (circuitType == CircuitType.SEQUENCER)
-            return (Instance) get(com.johncorby.virtualredstone.sequencer.Instance.class, identity, parent);
-        return (Instance) get(com.johncorby.virtualredstone.table.Instance.class, identity, parent);
+            return get(com.johncorby.virtualredstone.sequencer.Instance.class, identity, parent);
+        return get(com.johncorby.virtualredstone.table.Instance.class, identity, parent);
     }
 
     // Get RedstoneSign from sign

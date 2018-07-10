@@ -5,7 +5,7 @@ import com.johncorby.coreapi.util.eventconversation.EventConversation;
 import com.johncorby.coreapi.util.eventconversation.EventPrompt;
 import com.johncorby.coreapi.util.eventconversation.ListenerWithResult;
 import com.johncorby.virtualredstone.circuit.RedstoneSign;
-import com.johncorby.virtualredstone.table.Static;
+import com.johncorby.virtualredstone.circuit.Static;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -42,7 +42,7 @@ public class SetTableCombo extends BaseCommand {
 
         EventConversation convo = new EventConversation(sender);
         convo.setFirstPrompt(new EventPrompt<BlockBreakEvent>(BlockBreakEvent.class, convo, BlockBreakEvent::getPlayer) {
-            Static tab;
+            com.johncorby.virtualredstone.table.Static tab;
             ListenerWithResult signToggle;
 
             @Override
@@ -59,9 +59,9 @@ public class SetTableCombo extends BaseCommand {
                 if (!(input.getBlock().getState() instanceof Sign)) return false;
                 Sign sign = (Sign) input.getBlock().getState();
 
-                com.johncorby.virtualredstone.circuit.Static stat = Static.get(sign);
-                if (stat instanceof Static) {
-                    tab = (Static) stat;
+                Static stat = com.johncorby.virtualredstone.table.Static.get(sign);
+                if (stat instanceof com.johncorby.virtualredstone.table.Static) {
+                    tab = (com.johncorby.virtualredstone.table.Static) stat;
                     return true;
                 }
                 return false;

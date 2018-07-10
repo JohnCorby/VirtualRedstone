@@ -9,7 +9,7 @@ import java.util.Map;
 public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
     protected Map<List<Input>, List<Output>> elements = new Hashtable<>();
 
-    public Instance(Integer identity, Static parent) {
+    public Instance(Integer identity, com.johncorby.virtualredstone.circuit.Static parent) {
         super(identity, parent);
     }
 

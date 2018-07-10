@@ -3,6 +3,8 @@ package com.johncorby.virtualredstone.circuit;
 import com.johncorby.coreapi.util.Common;
 import com.johncorby.coreapi.util.MessageHandler;
 import com.johncorby.coreapi.util.storedclass.IdentNode;
+import com.johncorby.virtualredstone.sequencer.Input;
+import com.johncorby.virtualredstone.sequencer.Output;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -62,12 +64,12 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
     public static RedstoneSign get(CircuitType circuitType, SignType signType, Integer identity, Instance parent) {
         if (circuitType == CircuitType.SEQUENCER) {
             if (signType == SignType.INPUT)
-                return (RedstoneSign) get(com.johncorby.virtualredstone.sequencer.Input.class, identity, parent);
-            return (RedstoneSign) get(com.johncorby.virtualredstone.sequencer.Output.class, identity, parent);
+                return get(Input.class, identity, parent);
+            return get(Output.class, identity, parent);
         }
         if (signType == SignType.INPUT)
-            return (RedstoneSign) get(com.johncorby.virtualredstone.table.Input.class, identity, parent);
-        return (RedstoneSign) get(com.johncorby.virtualredstone.table.Output.class, identity, parent);
+            return get(com.johncorby.virtualredstone.table.Input.class, identity, parent);
+        return get(com.johncorby.virtualredstone.table.Output.class, identity, parent);
     }
 
     @Nullable

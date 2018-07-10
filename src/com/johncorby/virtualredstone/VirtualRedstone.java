@@ -7,6 +7,9 @@ import com.johncorby.virtualredstone.command.Add;
 import com.johncorby.virtualredstone.command.SetTableCombo;
 import com.johncorby.virtualredstone.listener.Block;
 import com.johncorby.virtualredstone.listener.Entity;
+import com.johncorby.virtualredstone.sequencer.Input;
+import com.johncorby.virtualredstone.sequencer.Output;
+import com.johncorby.virtualredstone.sequencer.Static;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
@@ -21,11 +24,11 @@ public class VirtualRedstone extends CoreApiPlugin {
         super.onEnable();
 
         // Register ConfigSerializable
-        ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.sequencer.Static.class);
+        ConfigurationSerialization.registerClass(Static.class);
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Static.class);
 
-        ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.sequencer.Input.class);
-        ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.sequencer.Output.class);
+        ConfigurationSerialization.registerClass(Input.class);
+        ConfigurationSerialization.registerClass(Output.class);
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Input.class);
         ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Output.class);
 
