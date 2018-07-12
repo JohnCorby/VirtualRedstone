@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,9 +44,10 @@ public class SetTableCombo extends BaseCommand {
 
         EventConversation convo = new EventConversation(sender);
         convo.setFirstPrompt(new EventPrompt<BlockBreakEvent>(BlockBreakEvent.class, convo, BlockBreakEvent::getPlayer) {
-            com.johncorby.virtualredstone.table.Static tab;
-            ListenerWithResult signToggle;
+            @Nullable com.johncorby.virtualredstone.table.Static tab;
+            @Nullable ListenerWithResult signToggle;
 
+            @NotNull
             @Override
             protected String getPromptText() {
                 convo.debug("getPromptText");
@@ -52,7 +55,7 @@ public class SetTableCombo extends BaseCommand {
             }
 
             @Override
-            protected boolean isInputValid(BlockBreakEvent input) {
+            protected boolean isInputValid(@NotNull BlockBreakEvent input) {
                 convo.debug("isInputValid");
                 input.setCancelled(true);
 
@@ -67,27 +70,31 @@ public class SetTableCombo extends BaseCommand {
                 return false;
             }
 
+            @NotNull
             @Override
             protected String getInvalidInputText(BlockBreakEvent invalidInput) {
                 convo.debug("getInvalidInputText");
                 return "That's not a valid sign";
             }
 
+            @Nullable
             @Override
             protected EventPrompt acceptValidInput(BlockBreakEvent input) {
                 convo.debug("acceptValidInput");
                 getForWhom().sendRawMessage("Table " + tab + " chosen");
 
                 return new EventPrompt<AsyncPlayerChatEvent>(AsyncPlayerChatEvent.class, convo, PlayerEvent::getPlayer) {
-                    Set<Integer> inputs = new HashSet<>(), outputs = new HashSet<>();
+                    final Set<Integer> inputs = new HashSet<>();
+                    final Set<Integer> outputs = new HashSet<>();
 
+                    @NotNull
                     @Override
                     protected String getPromptText() {
                         signToggle = new ListenerWithResult<BlockBreakEvent>(BlockBreakEvent.class) {
-                            RedstoneSign sign;
+                            @Nullable RedstoneSign sign;
 
                             @Override
-                            public boolean execute(BlockBreakEvent event) {
+                            public boolean execute(@NotNull BlockBreakEvent event) {
                                 event.setCancelled(true);
                                 if (!(event.getBlock().getState() instanceof Sign)) return false;
 
@@ -96,7 +103,7 @@ public class SetTableCombo extends BaseCommand {
                             }
 
                             @Override
-                            public void onSucceed(BlockBreakEvent event) {
+                            public void onSucceed(@NotNull BlockBreakEvent event) {
                                 sign.set(!sign.power());
                                 event.getPlayer().sendRawMessage("Set " + sign + " to " + sign.power());
                                 //if (sign.power()) {
@@ -109,7 +116,7 @@ public class SetTableCombo extends BaseCommand {
                             }
 
                             @Override
-                            public void onFail(BlockBreakEvent event) {
+                            public void onFail(@NotNull BlockBreakEvent event) {
                                 event.getPlayer().sendRawMessage("That's not a valid sign");
                             }
                         };
@@ -118,16 +125,18 @@ public class SetTableCombo extends BaseCommand {
                     }
 
                     @Override
-                    protected boolean isInputValid(AsyncPlayerChatEvent input) {
+                    protected boolean isInputValid(@NotNull AsyncPlayerChatEvent input) {
                         input.setCancelled(true);
                         return true;
                     }
 
+                    @Nullable
                     @Override
                     protected String getInvalidInputText(AsyncPlayerChatEvent input) {
                         return null;
                     }
 
+                    @Nullable
                     @Override
                     protected EventPrompt acceptValidInput(AsyncPlayerChatEvent input) {
                         getForWhom().sendRawMessage("Added table combo for Table " + tab);

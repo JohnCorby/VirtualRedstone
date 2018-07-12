@@ -4,6 +4,7 @@ import com.johncorby.coreapi.util.Common;
 import com.johncorby.coreapi.util.MessageHandler;
 import com.johncorby.coreapi.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -20,15 +21,15 @@ public abstract class Instance extends IdentNode<Integer, Static, RedstoneSign> 
         return new com.johncorby.virtualredstone.table.Instance(identity, parent);
     }
 
-    public static Instance get(CircuitType circuitType, Integer identity, Static parent) {
+    @Nullable
+    public static Instance get(CircuitType circuitType, Integer identity, @NotNull Static parent) {
         if (circuitType == CircuitType.SEQUENCER)
             return get(com.johncorby.virtualredstone.sequencer.Instance.class, identity, parent);
         return get(com.johncorby.virtualredstone.table.Instance.class, identity, parent);
     }
 
     // Get RedstoneSign from sign
-    @Nullable
-    public static Instance get(Sign sign) {
+    public static Instance get(@NotNull Sign sign) {
         CircuitType circuitType = CircuitType.get(sign);
         if (circuitType == null) return null;
 

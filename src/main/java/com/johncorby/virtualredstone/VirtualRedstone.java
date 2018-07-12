@@ -13,6 +13,7 @@ import com.johncorby.virtualredstone.sequencer.Static;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * TODO BUGS: https://github.com/JohnCorby/VirtualRedstone/issues?q=is%3Aopen+is%3Aissue+label%3Abug
@@ -36,11 +37,13 @@ public class VirtualRedstone extends CoreApiPlugin {
         new Config();
     }
 
+    @NotNull
     @Override
     public String getMessagePrefix() {
         return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "VirtualRedstone" + ChatColor.DARK_GRAY + "]";
     }
 
+    @NotNull
     @Override
     public BaseCommand[] getCommands() {
         return new BaseCommand[]{
@@ -49,6 +52,7 @@ public class VirtualRedstone extends CoreApiPlugin {
         };
     }
 
+    @NotNull
     @Override
     public Listener[] getListeners() {
         return new Listener[]{

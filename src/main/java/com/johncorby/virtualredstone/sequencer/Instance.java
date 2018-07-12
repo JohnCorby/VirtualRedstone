@@ -1,5 +1,6 @@
 package com.johncorby.virtualredstone.sequencer;
 
+import com.johncorby.coreapi.util.Runnable;
 import com.johncorby.virtualredstone.circuit.Static;
 
 public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
@@ -16,8 +17,7 @@ public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
         return true;
     }
 
-    protected void run() {
-
+    private void run() {
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.block.BlockRedstoneEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -35,8 +36,7 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         return new com.johncorby.virtualredstone.table.Output(sign, identity, parent);
     }
 
-    @Nullable
-    public static RedstoneSign get(Sign sign) {
+    public static RedstoneSign get(@NotNull Sign sign) {
         CircuitType circuitType = CircuitType.get(sign);
         if (circuitType == null) return null;
 
@@ -61,7 +61,8 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
     }
     // Get RedstoneSign from sign
 
-    public static RedstoneSign get(CircuitType circuitType, SignType signType, Integer identity, Instance parent) {
+    @Nullable
+    public static RedstoneSign get(CircuitType circuitType, SignType signType, Integer identity, @NotNull Instance parent) {
         if (circuitType == CircuitType.SEQUENCER) {
             if (signType == SignType.INPUT)
                 return get(Input.class, identity, parent);
@@ -73,11 +74,11 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
     }
 
     @Nullable
-    public static RedstoneSign signPlace(Sign sign) {
+    public static RedstoneSign signPlace(@NotNull Sign sign) {
         return get(sign);
     }
 
-    public static void signBreak(Sign sign) {
+    public static void signBreak(@NotNull Sign sign) {
         // So you can break non-rs signs
         try {
             Objects.requireNonNull(get(sign)).dispose();
@@ -96,6 +97,7 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         Objects.requireNonNull(get(sign)).set(event.getNewCurrent() > 0);
     }
 
+    @Nullable
     public static RedstoneSign deserialize(Map<String, Object> map) {
         Location l = (Location) map.get("Location");
         Sign s = (Sign) l.getBlock().getState();
@@ -103,6 +105,7 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         return signPlace(s);
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

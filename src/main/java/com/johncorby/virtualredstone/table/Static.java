@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class Static extends com.johncorby.virtualredstone.circuit.Static {
-    public Map<Set<Integer>, Set<Integer>> combos = new HashMap<>();
+    public final Map<Set<Integer>, Set<Integer>> combos = new HashMap<>();
 
     public Static(String identity) {
-        super(identity, null);
+        super(identity);
     }
 
     @Override

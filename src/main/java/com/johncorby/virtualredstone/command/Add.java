@@ -6,6 +6,7 @@ import com.johncorby.coreapi.util.MessageHandler;
 import com.johncorby.virtualredstone.circuit.CircuitType;
 import com.johncorby.virtualredstone.circuit.Static;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class Add extends BaseCommand {
     public Add() {
@@ -14,7 +15,7 @@ public class Add extends BaseCommand {
     }
 
     @Override
-    public boolean onCommand(Player sender, String[] args) {
+    public boolean onCommand(@NotNull Player sender, @NotNull String[] args) {
         if (args.length == 0) {
             MessageHandler.error(sender, "You must say whether to add a sequencer or table");
             return false;

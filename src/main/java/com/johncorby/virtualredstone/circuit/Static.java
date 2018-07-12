@@ -3,14 +3,15 @@ package com.johncorby.virtualredstone.circuit;
 import com.johncorby.coreapi.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Static extends IdentNode<String, IdentNode, Instance> implements ConfigurationSerializable {
-    protected Static(String identity, IdentNode parent) {
-        super(identity, parent);
+    protected Static(String identity) {
+        super(identity, null);
     }
 
     public static Static newInstance(CircuitType circuitType, String identity) {
@@ -19,6 +20,7 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
         return new com.johncorby.virtualredstone.table.Static(identity);
     }
 
+    @Nullable
     public static Static get(CircuitType circuitType, String identity) {
         if (circuitType == CircuitType.SEQUENCER)
             return get(com.johncorby.virtualredstone.sequencer.Static.class, identity);
@@ -26,8 +28,7 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
     }
 
     // Get RedstoneSign from sign
-    @Nullable
-    public static Static get(Sign sign) {
+    public static Static get(@NotNull Sign sign) {
         CircuitType circuitType = CircuitType.get(sign);
         if (circuitType == null) return null;
 
@@ -41,6 +42,7 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
         return newInstance(CircuitType.valueOf((String) map.get("CircuitType")), (String) map.get("Name"));
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

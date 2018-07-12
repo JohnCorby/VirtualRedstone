@@ -2,25 +2,23 @@ package com.johncorby.virtualredstone.circuit;
 
 import com.johncorby.coreapi.util.MessageHandler;
 import org.bukkit.block.Sign;
-import org.jetbrains.annotations.Nullable;
 
-public enum CircuitType {
-    SEQUENCER,
-    TABLE;
+public enum SignType {
+    INPUT,
+    OUTPUT;
 
-    @Nullable
-    public static CircuitType get(Sign sign) {
+    public static SignType get(Sign sign) {
         switch (sign.getLine(0).toLowerCase()) {
             case "[sin]":
-                return SEQUENCER;
+                return INPUT;
             case "[sout]":
-                return SEQUENCER;
+                return OUTPUT;
             case "[tin]":
-                return TABLE;
+                return INPUT;
             case "[tout]":
-                return TABLE;
+                return OUTPUT;
             default:
-                MessageHandler.warn("Line 1: invalid circuitType");
+                MessageHandler.warn("Line 1: invalid signType");
                 return null;
         }
     }
