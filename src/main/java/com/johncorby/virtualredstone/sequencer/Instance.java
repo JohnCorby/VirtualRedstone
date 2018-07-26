@@ -4,17 +4,10 @@ import com.johncorby.coreapi.util.Runnable;
 import com.johncorby.virtualredstone.circuit.Static;
 
 public class Instance extends com.johncorby.virtualredstone.circuit.Instance {
-    protected Task task;
+    private Task task = new Task();
 
     public Instance(Integer identity, Static parent) {
         super(identity, parent);
-    }
-
-    @Override
-    protected boolean create(Integer identity, Static parent) {
-        if (!super.create(identity, parent)) return false;
-        task = new Task();
-        return true;
     }
 
     private void run() {

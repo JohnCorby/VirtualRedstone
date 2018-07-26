@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 
 public abstract class Output extends RedstoneSign {
-    protected boolean powering = false;
+    private boolean powering = false;
 
     protected Output(Sign sign, Integer identity, Instance parent) {
         super(sign, identity, parent);

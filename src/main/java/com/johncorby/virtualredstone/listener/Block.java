@@ -11,13 +11,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class Block implements Listener {
     @EventHandler
-    public void onSignChange(@NotNull SignChangeEvent event) {
-        // Ignore if not sign
-        if (!(event.getBlock().getState() instanceof Sign)) return;
+    public void onSignChange(SignChangeEvent event) {
         Sign s = (Sign) event.getBlock().getState();
 
         s.setLine(0, event.getLine(0));
@@ -30,7 +27,7 @@ public class Block implements Listener {
 
 
     @EventHandler
-    public void onPlace(@NotNull BlockPlaceEvent event) {
+    public void onPlace(BlockPlaceEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
         Sign s = (Sign) event.getBlock().getState();
@@ -40,7 +37,7 @@ public class Block implements Listener {
 
 
     @EventHandler
-    public void onBreak(@NotNull BlockBreakEvent event) {
+    public void onBreak(BlockBreakEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
         Sign s = (Sign) event.getBlock().getState();
@@ -50,7 +47,7 @@ public class Block implements Listener {
 
 
     @EventHandler
-    public void onRedstone(@NotNull BlockRedstoneEvent event) {
+    public void onRedstone(BlockRedstoneEvent event) {
         for (BlockFace f : new BlockFace[]{
                 BlockFace.NORTH,
                 BlockFace.SOUTH,

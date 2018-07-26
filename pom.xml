@@ -9,6 +9,8 @@
     <version>0.5</version>
     <packaging>jar</packaging>
 
+    <name>VirtualRedstone</name>
+
     <dependencies>
         <dependency>
             <groupId>com.johncorby</groupId>
@@ -61,7 +63,9 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
+                    <finalName>${name}</finalName>
                     <outputDirectory>E:/Everything Else/Singleplayer Server/plugins</outputDirectory>
+                    <forceCreation>true</forceCreation>
                 </configuration>
             </plugin>
         </plugins>

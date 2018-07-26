@@ -4,7 +4,7 @@ import com.johncorby.coreapi.util.MessageHandler;
 import org.bukkit.block.Sign;
 
 public abstract class Input extends RedstoneSign {
-    protected boolean powered = false;
+    private boolean powered = false;
 
     protected Input(Sign sign, Integer identity, Instance parent) {
         super(sign, identity, parent);

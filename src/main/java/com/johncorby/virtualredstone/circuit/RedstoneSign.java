@@ -9,8 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.block.BlockRedstoneEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +18,10 @@ import java.util.Objects;
 public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNode> implements ConfigurationSerializable {
     protected Sign sign;
 
-    protected RedstoneSign(Sign sign, Integer identity, Instance parent) {
+    RedstoneSign(Sign sign, Integer identity, Instance parent) {
         super(identity, parent);
-        create(sign, identity, parent);
+        this.sign = sign;
+        create();
     }
 
     public static RedstoneSign newInstance(CircuitType circuitType, SignType signType, Sign sign, Integer identity, Instance parent) {
@@ -36,7 +35,7 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         return new com.johncorby.virtualredstone.table.Output(sign, identity, parent);
     }
 
-    public static RedstoneSign get(@NotNull Sign sign) {
+    public static RedstoneSign get(Sign sign) {
         CircuitType circuitType = CircuitType.get(sign);
         if (circuitType == null) return null;
 
@@ -61,8 +60,8 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
     }
     // Get RedstoneSign from sign
 
-    @Nullable
-    public static RedstoneSign get(CircuitType circuitType, SignType signType, Integer identity, @NotNull Instance parent) {
+
+    public static RedstoneSign get(CircuitType circuitType, SignType signType, Integer identity, Instance parent) {
         if (circuitType == CircuitType.SEQUENCER) {
             if (signType == SignType.INPUT)
                 return get(Input.class, identity, parent);
@@ -73,12 +72,12 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         return get(com.johncorby.virtualredstone.table.Output.class, identity, parent);
     }
 
-    @Nullable
-    public static RedstoneSign signPlace(@NotNull Sign sign) {
+
+    public static RedstoneSign signPlace(Sign sign) {
         return get(sign);
     }
 
-    public static void signBreak(@NotNull Sign sign) {
+    public static void signBreak(Sign sign) {
         // So you can break non-rs signs
         try {
             Objects.requireNonNull(get(sign)).dispose();
@@ -97,7 +96,7 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         Objects.requireNonNull(get(sign)).set(event.getNewCurrent() > 0);
     }
 
-    @Nullable
+
     public static RedstoneSign deserialize(Map<String, Object> map) {
         Location l = (Location) map.get("Location");
         Sign s = (Sign) l.getBlock().getState();
@@ -105,7 +104,6 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         return signPlace(s);
     }
 
-    @NotNull
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
@@ -113,23 +111,18 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
         return map;
     }
 
-    protected boolean create(Sign sign, Integer identity, Instance parent) {
-        if (!super.create(identity, parent)) return false;
-        this.sign = sign;
+    @Override
+    public boolean create() {
+        if (!super.create()) return false;
         Config.add("Signs", this);
         return true;
     }
 
     @Override
-    protected final boolean create(Integer identity, Instance parent) {
-        return true;
-    }
-
-    @Override
     public boolean dispose() {
-        if (!stored()) return false;
+        if (!super.dispose()) return false;
         Config.remove("Signs", this);
-        return super.dispose();
+        return true;
     }
 
     public abstract void set(boolean powered);

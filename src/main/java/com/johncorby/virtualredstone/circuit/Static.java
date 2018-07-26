@@ -3,8 +3,6 @@ package com.johncorby.virtualredstone.circuit;
 import com.johncorby.coreapi.util.storedclass.IdentNode;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +18,7 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
         return new com.johncorby.virtualredstone.table.Static(identity);
     }
 
-    @Nullable
+
     public static Static get(CircuitType circuitType, String identity) {
         if (circuitType == CircuitType.SEQUENCER)
             return get(com.johncorby.virtualredstone.sequencer.Static.class, identity);
@@ -28,7 +26,7 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
     }
 
     // Get RedstoneSign from sign
-    public static Static get(@NotNull Sign sign) {
+    public static Static get(Sign sign) {
         CircuitType circuitType = CircuitType.get(sign);
         if (circuitType == null) return null;
 
@@ -42,7 +40,7 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
         return newInstance(CircuitType.valueOf((String) map.get("CircuitType")), (String) map.get("Name"));
     }
 
-    @NotNull
+
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
@@ -55,16 +53,16 @@ public abstract class Static extends IdentNode<String, IdentNode, Instance> impl
     }
 
     @Override
-    protected boolean create(String identity, IdentNode parent) {
-        if (!super.create(identity, parent)) return false;
+    public boolean create() {
+        if (!super.create()) return false;
         Config.add("Statics", this);
         return true;
     }
 
     @Override
     public boolean dispose() {
-        if (!stored()) return false;
+        if (!super.dispose()) return false;
         Config.add("Statics", this);
-        return super.dispose();
+        return true;
     }
 }
