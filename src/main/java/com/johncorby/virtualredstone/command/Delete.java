@@ -6,8 +6,8 @@ import com.johncorby.virtualredstone.circuit.Circuit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Add extends BaseCommand {
-    public Add() {
+public class Delete extends BaseCommand {
+    public Delete() {
         super("Add a circuit", "<name>", PERM_ADMIN);
 //        TabCompleteHandler.register(getName(), 0, "sequencer", "table");
     }
@@ -52,13 +52,14 @@ public class Add extends BaseCommand {
             return false;
         }
 
-        if (Circuit.get(args[0]) != null) {
-            MessageHandler.error(sender, "Circuit already exists");
+        Circuit c = Circuit.get(args[0]);
+        if (c == null) {
+            MessageHandler.error(sender, "Circuit doesn't exists");
             return false;
         }
 
-        new Circuit(args[0]);
-        MessageHandler.info(sender, "Added circuit " + args[0]);
+        c.configRemove();
+        MessageHandler.info(sender, "Removed circuit " + args[0]);
         return true;
     }
 }

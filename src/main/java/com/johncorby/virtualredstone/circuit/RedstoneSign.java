@@ -1,50 +1,53 @@
 package com.johncorby.virtualredstone.circuit;
 
 import com.johncorby.coreapi.util.Common;
+import com.johncorby.coreapi.util.Config;
 import com.johncorby.coreapi.util.MessageHandler;
+import com.johncorby.coreapi.util.storedclass.ConfigIdentNode;
 import com.johncorby.coreapi.util.storedclass.IdentNode;
-import com.johncorby.virtualredstone.sequencer.Input;
-import com.johncorby.virtualredstone.sequencer.Output;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.event.block.BlockRedstoneEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNode> implements ConfigurationSerializable {
-    protected Sign sign;
+import static com.johncorby.coreapi.CoreApiPlugin.PLUGIN;
 
-    RedstoneSign(Sign sign, Integer identity, Instance parent) {
+public abstract class RedstoneSign extends ConfigIdentNode<Integer, Instance, IdentNode> {
+    protected Sign sign;
+    protected boolean active;
+
+    public RedstoneSign(Sign sign, int identity, Instance parent) {
         super(identity, parent);
         this.sign = sign;
         create();
     }
 
-    public static RedstoneSign newInstance(CircuitType circuitType, SignType signType, Sign sign, Integer identity, Instance parent) {
-        if (circuitType == CircuitType.SEQUENCER) {
-            if (signType == SignType.INPUT)
-                return new com.johncorby.virtualredstone.sequencer.Input(sign, identity, parent);
-            return new com.johncorby.virtualredstone.sequencer.Output(sign, identity, parent);
-        }
-        if (signType == SignType.INPUT)
-            return new com.johncorby.virtualredstone.table.Input(sign, identity, parent);
-        return new com.johncorby.virtualredstone.table.Output(sign, identity, parent);
+    public RedstoneSign(@NotNull Map<String, Object> map) {
+        super(map);
     }
 
-    public static RedstoneSign get(Sign sign) {
-        CircuitType circuitType = CircuitType.get(sign);
-        if (circuitType == null) return null;
+    public static RedstoneSign newInstance(SignType type, Sign sign, int identity, Instance parent) {
+        if (type == SignType.INPUT)
+            return new Input(sign, identity, parent);
+        return new Output(sign, identity, parent);
+    }
 
-        SignType signType = SignType.get(sign);
-        if (signType == null) return null;
+    @Nullable
+    public static RedstoneSign get(SignType type, int identity, @NotNull Instance parent) {
+        if (type == SignType.INPUT)
+            return get(Input.class, identity, parent);
+        return get(Output.class, identity, parent);
+    }
 
-        Integer num = Common.toInt(sign.getLine(3));
-        if (num == null) {
-            MessageHandler.warn("Line 4: invalid sign num");
+    // Get RedstoneSign from sign
+    public static RedstoneSign get(@NotNull Sign sign) {
+        SignType type = SignType.get(sign);
+        if (type == null) {
+            MessageHandler.warn("Line 1: invalid sign type");
             return null;
         }
 
@@ -54,85 +57,77 @@ public abstract class RedstoneSign extends IdentNode<Integer, Instance, IdentNod
             return null;
         }
 
-        RedstoneSign redstoneSign = get(circuitType, signType, num, inst);
-        if (redstoneSign == null) redstoneSign = newInstance(circuitType, signType, sign, num, inst);
+        Integer signNum = Common.toInt(sign.getLine(3));
+        if (signNum == null) {
+            MessageHandler.warn("Line 4: invalid sign num");
+            return null;
+        }
+
+        RedstoneSign redstoneSign = get(type, signNum, inst);
+        if (redstoneSign == null) redstoneSign = newInstance(type, sign, signNum, inst);
         return redstoneSign;
     }
-    // Get RedstoneSign from sign
 
-
-    public static RedstoneSign get(CircuitType circuitType, SignType signType, Integer identity, Instance parent) {
-        if (circuitType == CircuitType.SEQUENCER) {
-            if (signType == SignType.INPUT)
-                return get(Input.class, identity, parent);
-            return get(Output.class, identity, parent);
-        }
-        if (signType == SignType.INPUT)
-            return get(com.johncorby.virtualredstone.table.Input.class, identity, parent);
-        return get(com.johncorby.virtualredstone.table.Output.class, identity, parent);
+    public static void signPlace(@NotNull Sign sign) {
+        get(sign);
     }
 
-
-    public static RedstoneSign signPlace(Sign sign) {
-        return get(sign);
-    }
-
-    public static void signBreak(Sign sign) {
+    public static void signBreak(@NotNull Sign sign) {
         // So you can break non-rs signs
         try {
-            Objects.requireNonNull(get(sign)).dispose();
+            Objects.requireNonNull(get(sign)).configRemove();
 
-            Instance inst = Instance.get(sign);
-            if (Objects.requireNonNull(inst).getChildren().isEmpty())
+            Instance inst = Objects.requireNonNull(Instance.get(sign));
+            if (inst.getChildren().isEmpty())
                 inst.dispose();
         } catch (NullPointerException e) {
             MessageHandler.warn(e);
         }
     }
 
-    public static void signPower(BlockRedstoneEvent event) {
-        Sign sign = (Sign) event.getBlock().getState();
-
-        Objects.requireNonNull(get(sign)).set(event.getNewCurrent() > 0);
+    public static void signActivate(@NotNull Sign sign, boolean active) {
+        Objects.requireNonNull(get(sign)).setActive(active);
     }
 
-
-    public static RedstoneSign deserialize(Map<String, Object> map) {
-        Location l = (Location) map.get("Location");
-        Sign s = (Sign) l.getBlock().getState();
-
-        return signPlace(s);
+    public boolean isActive() {
+        return active;
     }
+
+    public abstract void setActive(boolean active);
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = super.serialize();
         map.put("Location", sign.getLocation());
         return map;
     }
 
     @Override
-    public boolean create() {
-        if (!super.create()) return false;
-        Config.add("Signs", this);
-        return true;
+    public void deserialize(@NotNull Map<String, Object> map) {
+        super.deserialize(map);
+        Location l = (Location) map.get("Location");
+        this.sign = (Sign) l.getBlock().getState();
     }
 
     @Override
-    public boolean dispose() {
-        if (!super.dispose()) return false;
-        Config.remove("Signs", this);
-        return true;
+    public void configAdd() {
+        Config.addSet("Signs", this);
+        PLUGIN.saveConfig();
     }
 
-    public abstract void set(boolean powered);
-
-    public abstract boolean power();
+    @Override
+    public boolean configRemove() {
+        Config.removeSet("Signs", this);
+        PLUGIN.saveConfig();
+        return dispose();
+    }
 
     @Override
     public List<String> getDebug() {
         List<String> r = super.getDebug();
-        r.add("Power: " + power());
+        r.add("Active: " + isActive());
         return r;
     }
+
+
 }

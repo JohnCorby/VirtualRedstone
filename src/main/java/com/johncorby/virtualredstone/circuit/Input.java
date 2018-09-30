@@ -1,23 +1,24 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.coreapi.util.MessageHandler;
 import org.bukkit.block.Sign;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class Input extends RedstoneSign {
-    private boolean powered = false;
+import java.util.Map;
 
-    protected Input(Sign sign, Integer identity, Instance parent) {
+public class Input extends RedstoneSign {
+    public Input(Sign sign, int identity, Instance parent) {
         super(sign, identity, parent);
     }
 
-    public void set(boolean powered) {
-        if (powered == this.powered) return;
-        this.powered = powered;
-        MessageHandler.debug("Powered = " + powered);
+    public Input(@NotNull Map<String, Object> map) {
+        super(map);
     }
 
-    @Override
-    public boolean power() {
-        return powered;
+    public void setActive(boolean active) {
+        if (this.active == active) return;
+        this.active = active;
+        debug("Active = " + active);
+
+        parent.onActiveStateChanged(SignType.INPUT, get(), active);
     }
 }

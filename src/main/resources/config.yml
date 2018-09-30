@@ -1,18 +1,2 @@
-#Sign:
-#  type (seq/tab + in/out)
-#  seq/tab name
-#  instance num
-#  in/out num
-
-#Sequencers:
-#  Name:
-#    - o0
-#Tables:
-#  Name:
-#    - io,o0
-#SignLocs:
-#  - location
-
-
-Statics: []
+Circuits: []
 Signs: []

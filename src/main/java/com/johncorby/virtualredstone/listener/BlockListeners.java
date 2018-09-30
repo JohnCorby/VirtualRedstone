@@ -1,9 +1,7 @@
 package com.johncorby.virtualredstone.listener;
 
-import com.johncorby.virtualredstone.circuit.Input;
 import com.johncorby.virtualredstone.circuit.RedstoneSign;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +9,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.jetbrains.annotations.NotNull;
 
-public class Block implements Listener {
+public class BlockListeners implements Listener {
     @EventHandler
-    public void onSignChange(SignChangeEvent event) {
+    public void onSignChange(@NotNull SignChangeEvent event) {
         Sign s = (Sign) event.getBlock().getState();
 
         s.setLine(0, event.getLine(0));
@@ -27,7 +26,7 @@ public class Block implements Listener {
 
 
     @EventHandler
-    public void onPlace(BlockPlaceEvent event) {
+    public void onPlace(@NotNull BlockPlaceEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
         Sign s = (Sign) event.getBlock().getState();
@@ -37,7 +36,7 @@ public class Block implements Listener {
 
 
     @EventHandler
-    public void onBreak(BlockBreakEvent event) {
+    public void onBreak(@NotNull BlockBreakEvent event) {
         // Ignore if not sign
         if (!(event.getBlock().getState() instanceof Sign)) return;
         Sign s = (Sign) event.getBlock().getState();
@@ -47,7 +46,7 @@ public class Block implements Listener {
 
 
     @EventHandler
-    public void onRedstone(BlockRedstoneEvent event) {
+    public void onRedstone(@NotNull BlockRedstoneEvent event) {
         for (BlockFace f : new BlockFace[]{
                 BlockFace.NORTH,
                 BlockFace.SOUTH,
@@ -56,17 +55,12 @@ public class Block implements Listener {
                 BlockFace.UP,
                 BlockFace.DOWN
         }) {
-            BlockState bs = event.getBlock().getRelative(f).getState();
-
             // Ignore if not sign
-            if (!(bs instanceof Sign)) continue;
-            Sign s = (Sign) bs;
+            if (!(event.getBlock().getRelative(f).getState() instanceof Sign)) continue;
+            Sign s = (Sign) event.getBlock().getRelative(f).getState();
 
-            switch (s.getLine(0).toLowerCase()) {
-                case "[sin]":
-                case "[tin]":
-                    Input.signPower(event);
-            }
+            if (s.getLine(0).equalsIgnoreCase("[in]"))
+                RedstoneSign.signActivate(s, event.getNewCurrent() > 0);
         }
     }
 }

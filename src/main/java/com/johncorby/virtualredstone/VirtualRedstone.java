@@ -2,17 +2,17 @@ package com.johncorby.virtualredstone;
 
 import com.johncorby.coreapi.CoreApiPlugin;
 import com.johncorby.coreapi.command.BaseCommand;
-import com.johncorby.virtualredstone.circuit.Config;
+import com.johncorby.coreapi.util.Config;
+import com.johncorby.virtualredstone.circuit.Circuit;
+import com.johncorby.virtualredstone.circuit.Input;
+import com.johncorby.virtualredstone.circuit.Instance;
+import com.johncorby.virtualredstone.circuit.Output;
 import com.johncorby.virtualredstone.command.Add;
-import com.johncorby.virtualredstone.command.SetTableCombo;
-import com.johncorby.virtualredstone.listener.Block;
-import com.johncorby.virtualredstone.listener.Entity;
-import com.johncorby.virtualredstone.sequencer.Input;
-import com.johncorby.virtualredstone.sequencer.Output;
-import com.johncorby.virtualredstone.sequencer.Static;
+import com.johncorby.virtualredstone.listener.BlockListeners;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * TODO BUGS: https://github.com/JohnCorby/VirtualRedstone/issues?q=is%3Aopen+is%3Aissue+label%3Abug
@@ -24,39 +24,41 @@ public class VirtualRedstone extends CoreApiPlugin {
         super.onEnable();
 
         // Register ConfigSerializable
-        ConfigurationSerialization.registerClass(Static.class);
-        ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Static.class);
-
+        ConfigurationSerialization.registerClass(Circuit.class);
+        ConfigurationSerialization.registerClass(Instance.class);
         ConfigurationSerialization.registerClass(Input.class);
         ConfigurationSerialization.registerClass(Output.class);
-        ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Input.class);
-        ConfigurationSerialization.registerClass(com.johncorby.virtualredstone.table.Output.class);
 
-        // Init classes
-        new Config();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+
+        Config.getSet("Circuits");
+        Config.getSet("Signs");
     }
 
 
+    @NotNull
     @Override
     public String getMessagePrefix() {
         return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "VirtualRedstone" + ChatColor.DARK_GRAY + "]";
     }
 
 
+    @NotNull
     @Override
     public BaseCommand[] getCommands() {
         return new BaseCommand[]{
                 new Add(),
-                new SetTableCombo()
+//                new SetTableCombo()
         };
     }
 
 
+    @NotNull
     @Override
     public Listener[] getListeners() {
         return new Listener[]{
-                new Block(),
-                new Entity()
+                new BlockListeners(),
         };
     }
 }
