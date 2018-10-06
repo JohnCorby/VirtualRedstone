@@ -1,6 +1,5 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.coreapi.util.Common;
 import com.johncorby.coreapi.util.MessageHandler;
 import com.johncorby.coreapi.util.storedclass.ConfigIdentNode;
 import org.bukkit.block.Sign;
@@ -10,7 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Set;
 
-import static com.johncorby.coreapi.util.Common.*;
+import static com.johncorby.coreapi.util.Collections.filter;
+import static com.johncorby.coreapi.util.Collections.map;
+import static com.johncorby.coreapi.util.Conversions.toInt;
+import static com.johncorby.coreapi.util.Conversions.toSet;
 
 public class Instance extends ConfigIdentNode<Integer, Circuit, RedstoneSign> {
     public Instance(int identity, Circuit parent) {
@@ -36,7 +38,7 @@ public class Instance extends ConfigIdentNode<Integer, Circuit, RedstoneSign> {
             return null;
         }
 
-        Integer instNum = Common.toInt(sign.getLine(2));
+        Integer instNum = toInt(sign.getLine(2));
         if (instNum == null) {
             MessageHandler.warn("Line 3: invalid inst num");
             return null;

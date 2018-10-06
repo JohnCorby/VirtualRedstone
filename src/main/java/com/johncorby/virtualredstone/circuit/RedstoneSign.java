@@ -1,6 +1,5 @@
 package com.johncorby.virtualredstone.circuit;
 
-import com.johncorby.coreapi.util.Common;
 import com.johncorby.coreapi.util.Config;
 import com.johncorby.coreapi.util.MessageHandler;
 import com.johncorby.coreapi.util.storedclass.ConfigIdentNode;
@@ -15,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.johncorby.coreapi.CoreApiPlugin.PLUGIN;
+import static com.johncorby.coreapi.util.Conversions.toInt;
 
 public abstract class RedstoneSign extends ConfigIdentNode<Integer, Instance, IdentNode> {
     protected Sign sign;
@@ -57,7 +57,7 @@ public abstract class RedstoneSign extends ConfigIdentNode<Integer, Instance, Id
             return null;
         }
 
-        Integer signNum = Common.toInt(sign.getLine(3));
+        Integer signNum = toInt(sign.getLine(3));
         if (signNum == null) {
             MessageHandler.warn("Line 4: invalid sign num");
             return null;
