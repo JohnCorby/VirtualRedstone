@@ -11,7 +11,6 @@ import java.util.Set;
 
 import static com.johncorby.coreapi.util.Collections.filter;
 import static com.johncorby.coreapi.util.Collections.map;
-import static com.johncorby.coreapi.util.Conversions.toInt;
 import static com.johncorby.coreapi.util.Conversions.toSet;
 
 public class Instance extends ConfigIdentNode<Integer, Circuit, RedstoneSign> {

@@ -6,6 +6,7 @@
 //import com.johncorby.coreapi.util.eventconversation.ListenerWithResult;
 //import com.johncorby.virtualredstone.circuit.RedstoneSign;
 //import com.johncorby.virtualredstone.circuit.Circuit;
+//import org.bukkit.block.Block;
 //import org.bukkit.block.Sign;
 //import org.bukkit.entity.Player;
 //import org.bukkit.event.block.BlockBreakEvent;

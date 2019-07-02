@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.johncorby.coreapi.CoreApiPlugin.PLUGIN;
-import static com.johncorby.coreapi.util.Conversions.toInt;
 
 public abstract class RedstoneSign extends ConfigIdentNode<Integer, Instance, IdentNode> {
     protected Sign sign;

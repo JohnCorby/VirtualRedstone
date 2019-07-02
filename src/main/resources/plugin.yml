@@ -6,11 +6,11 @@ description: Plugin for my server
 depend: [PlugMan]
 
 commands:
-    virtualredstone:
-        description: Base VirtualRedstone command.
-        aliases: vrs
+  virtualredstone:
+    description: Base VirtualRedstone command.
+    aliases: vrs
 
 permissions:
-    virtualredstone.admin:
-        description: You can do everything.
-        default: op
+  virtualredstone.admin:
+    description: You can do everything.
+    default: op

@@ -1,13 +1,12 @@
 package com.johncorby.virtualredstone.listener;
 
 import com.johncorby.virtualredstone.circuit.RedstoneSign;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,21 +45,12 @@ public class BlockListeners implements Listener {
 
 
     @EventHandler
-    public void onRedstone(@NotNull BlockRedstoneEvent event) {
-        for (BlockFace f : new BlockFace[]{
-                BlockFace.NORTH,
-                BlockFace.SOUTH,
-                BlockFace.EAST,
-                BlockFace.WEST,
-                BlockFace.UP,
-                BlockFace.DOWN
-        }) {
-            // Ignore if not sign
-            if (!(event.getBlock().getRelative(f).getState() instanceof Sign)) continue;
-            Sign s = (Sign) event.getBlock().getRelative(f).getState();
+    public void onPhysics(BlockPhysicsEvent event) {
+        // Ignore if not sign
+        if (!(event.getBlock().getState() instanceof Sign)) return;
+        Sign s = (Sign) event.getBlock().getState();
 
-            if (s.getLine(0).equalsIgnoreCase("[in]"))
-                RedstoneSign.signActivate(s, event.getNewCurrent() > 0);
-        }
+        if (s.getLine(0).equalsIgnoreCase("[in]"))
+            RedstoneSign.signActivate(s, event.getBlock().getBlockPower() > 0);
     }
 }
